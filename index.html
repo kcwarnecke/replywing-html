@@ -187,6 +187,44 @@
   .fcard h3{margin-bottom:8px}
   .fcard p{font-size:16px;line-height:1.6;color:var(--text)}
 
+  /* ---------- PLATFORM BAR ---------- */
+  .platforms{background:var(--gray-light);padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .platforms-inner{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px;text-align:center}
+  .platforms .label{font-size:13.5px;color:var(--gray);font-weight:500}
+  .platforms .label strong{color:var(--navy);font-weight:600}
+  .platforms .pill{display:inline-flex;align-items:center;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;letter-spacing:.01em;line-height:1.2}
+  .platforms .pill-active{background:var(--orange);color:#fff}
+  .platforms .pill-soon{background:transparent;color:var(--gray);border:1.5px dashed #c9ced3}
+  .platforms .group{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+  .platforms .divider{width:1px;height:18px;background:var(--border);display:inline-block;margin:0 6px}
+  @media(max-width:640px){.platforms .divider{display:none}.platforms-inner{gap:10px}}
+
+  /* ---------- REVIEWER INTELLIGENCE ---------- */
+  .ri{background:var(--navy);color:#fff;overflow:hidden;position:relative}
+  .ri::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.045) 1px,transparent 0);background-size:28px 28px;pointer-events:none}
+  .ri-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative}
+  @media(max-width:980px){.ri-grid{grid-template-columns:1fr;gap:44px}}
+  .ri h2{color:#fff;font-size:clamp(28px,3.6vw,38px);line-height:1.15;font-weight:700;letter-spacing:-.02em;text-wrap:balance;margin-top:18px}
+  .ri .ri-badge{display:inline-flex;align-items:center;gap:7px;background:var(--orange);color:#fff;font-size:13px;font-weight:600;padding:7px 13px;border-radius:999px}
+  .ri .ri-body{color:rgba(255,255,255,.78);font-size:17px;line-height:1.65;margin-top:18px;text-wrap:pretty}
+  .ri .ri-body p+p{margin-top:14px}
+  .ri .mini-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .ri .mini-pill{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--navy);font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+  .ri-cards{display:flex;flex-direction:column;gap:14px}
+  .ri-card{background:#fff;color:var(--text);border-radius:12px;padding:16px 18px;box-shadow:0 12px 30px rgba(0,0,0,.22);border-left:4px solid var(--gray);transition:transform .25s ease}
+  .ri-card:hover{transform:translateX(3px)}
+  .ri-card.purple{border-left-color:#7c5cff}
+  .ri-card.green{border-left-color:#27ae60}
+  .ri-card.yellow{border-left-color:#f5b400}
+  .ri-card .top-label{font-size:11.5px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;line-height:1.4}
+  .ri-card .ri-review{display:flex;align-items:baseline;gap:8px;font-size:14.5px;color:var(--text);line-height:1.4;margin-bottom:10px}
+  .ri-card .ri-review .stars{color:#f5b400;letter-spacing:1px;font-size:13px;flex:none;white-space:nowrap}
+  .ri-card .ri-review em{font-style:italic;color:#2d3436;font-weight:500}
+  .ri-card .approach{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px}
+  .ri-card.purple .approach{background:rgba(124,92,255,.1);color:#5b3fd9}
+  .ri-card.green .approach{background:rgba(39,174,96,.12);color:#1f8a4d}
+  .ri-card.yellow .approach{background:rgba(245,180,0,.14);color:#8a6500}
+
   /* ---------- WALKTHROUGH ---------- */
   .walk{background:var(--navy);color:#fff}
   .walk .section-head h2{color:#fff}
@@ -195,6 +233,8 @@
   @media(max-width:980px){.walk-cards{grid-template-columns:1fr}}
   .wcard{background:#fff;color:var(--text);border-radius:var(--radius);padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
   .wcard .tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,53,.12);color:var(--orange);font-size:12.5px;font-weight:700;padding:6px 11px;border-radius:999px;margin-bottom:16px}
+  .wcard .step-label{display:flex;align-items:center;gap:6px;background:rgba(26,43,73,.05);color:var(--navy);font-size:11.5px;font-weight:600;padding:7px 10px;border-radius:8px;margin-bottom:10px;line-height:1.35;flex-wrap:wrap}
+  .wcard .step-label .sep{color:rgba(26,43,73,.3)}
   .mockup{border:1px solid var(--border);border-radius:10px;overflow:hidden}
   .mockup .head{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#fafbfc;border-bottom:1px solid var(--border)}
   .mockup .head .dot{width:9px;height:9px;border-radius:50%;background:#e2e5e9}
@@ -469,11 +509,29 @@
 <section class="stats" aria-label="Key stats">
   <div class="container">
     <div class="stats-grid">
-      <div class="stat"><div class="num" data-target="2" data-suffix=" Hours">2 Hours</div><div class="lab">Average review detection time</div></div>
-      <div class="stat"><div class="num" data-target="15" data-suffix=" Seconds">15 Seconds</div><div class="lab">To post an approved response</div></div>
-      <!-- PRICING TBD -->
-      <div class="stat"><div class="num"><span class="ph">TBD</span></div><div class="lab">Per month, less than a social media manager</div></div>
-      <div class="stat"><div class="num" data-target="100" data-suffix="%">100%</div><div class="lab">Responses reviewed by you before posting</div></div>
+      <div class="stat"><div class="num" data-target="5" data-suffix=" Min">5 Min</div><div class="lab">Response time for high-priority reviews</div></div>
+      <div class="stat"><div class="num" data-target="2" data-suffix=" Hours">2 Hours</div><div class="lab">Response time for standard reviews</div></div>
+      <div class="stat"><div class="num" data-target="2" data-suffix=" Layers">2 Layers</div><div class="lab">Of quality control before you see anything</div></div>
+      <div class="stat"><div class="num" data-target="100" data-suffix="%">100%</div><div class="lab">Responses approved by you before posting</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PLATFORM BAR ============== -->
+<section class="platforms" aria-label="Supported platforms">
+  <div class="container">
+    <div class="platforms-inner">
+      <div class="group">
+        <span class="label"><strong>Currently supporting:</strong></span>
+        <span class="pill pill-active">Yelp</span>
+      </div>
+      <span class="divider" aria-hidden="true"></span>
+      <div class="group">
+        <span class="label"><strong>Coming soon:</strong></span>
+        <span class="pill pill-soon">Google</span>
+        <span class="pill pill-soon">Facebook</span>
+        <span class="pill pill-soon">TripAdvisor</span>
+      </div>
     </div>
   </div>
 </section>
@@ -538,9 +596,9 @@
         <div class="icon-tile">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18 9l-3.6 2.8L15.5 17 12 14.3 8.5 17l1.1-5.2L6 9l4.2-1.4z"/><circle cx="19" cy="5" r="1.2" fill="currentColor"/><circle cx="5" cy="19" r="1.2" fill="currentColor"/><circle cx="20" cy="18" r="1" fill="currentColor"/></svg>
         </div>
-        <h3>AI Drafts a Perfect Response</h3>
-        <p>Claude AI analyzes the review and generates a professional response in your restaurant's voice. Warm for great reviews. Graceful for tough ones.</p>
-        <span class="micro"><span class="tiny-dot"></span>Response ready within minutes</span>
+        <h3>AI Drafts a Smart Response</h3>
+        <p>Claude AI doesn't just read the review — it analyzes <em>who</em> left it. Elite reviewers, loyal regulars, and first-time visitors all get responses calibrated to them. Warm for great reviews. Graceful for tough ones.</p>
+        <span class="micro"><span class="tiny-dot"></span>Reviewer intelligence built in</span>
       </div>
       <div class="step">
         <span class="bignum">03</span>
@@ -598,6 +656,64 @@
           <p>A social media manager costs $2,000+/month. Reply Wing handles your Yelp reviews for a fraction of that.</p>
         </div>
       </div>
+      <div class="fcard">
+        <div class="ft-icon navy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="2.2" fill="currentColor" stroke="none"/><line x1="14.6" y1="14.6" x2="21" y2="21"/></svg>
+        </div>
+        <div>
+          <h3>Reviewer Intelligence</h3>
+          <p>We identify Yelp Elite reviewers, loyal returning customers, and high-risk profiles — so every response is calibrated to exactly who left it.</p>
+        </div>
+      </div>
+      <div class="fcard">
+        <div class="ft-icon orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11.5 14.5 16 10"/></svg>
+        </div>
+        <div>
+          <h3>Double Quality Control</h3>
+          <p>Every AI response is quality-checked by our team before it ever reaches you. Nothing gets through without passing two layers of review.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== REVIEWER INTELLIGENCE ============== -->
+<section class="ri" id="reviewer-intelligence">
+  <div class="container">
+    <div class="ri-grid">
+      <div class="reveal">
+        <span class="ri-badge">🧠 Reviewer Intelligence</span>
+        <h2>Not All Reviews Are Created Equal.</h2>
+        <div class="ri-body">
+          <p>A 5-star review from a Yelp Elite member with 800 reviews carries a lot more weight than one from a brand new account.</p>
+          <p><strong style="color:#fff">Reply Wing knows the difference.</strong></p>
+          <p>We analyze every reviewer before crafting a response — identifying their influence, their history, and their relationship with your restaurant. The result? Responses that are always perfectly calibrated to the person who left them.</p>
+        </div>
+        <div class="mini-pills">
+          <span class="mini-pill">⭐ Elite Reviewer Detected</span>
+          <span class="mini-pill">🔄 Loyal Returning Customer</span>
+          <span class="mini-pill">⚡ Priority Response Triggered</span>
+        </div>
+      </div>
+
+      <div class="ri-cards reveal-stagger">
+        <div class="ri-card purple">
+          <div class="top-label">Yelp Elite · 847 reviews · Influencer Score 9/10</div>
+          <div class="ri-review"><span class="stars">★★☆☆☆</span><em>"Waited 45 minutes for a table."</em></div>
+          <span class="approach">🔴 Priority Response · Detailed &amp; Empathetic</span>
+        </div>
+        <div class="ri-card green">
+          <div class="top-label">Returning Customer · 3rd Visit · Low Risk</div>
+          <div class="ri-review"><span class="stars">★★★★★</span><em>"Best carbonara in Orange County!"</em></div>
+          <span class="approach">💚 Acknowledge Loyalty · Warm &amp; Personal</span>
+        </div>
+        <div class="ri-card yellow">
+          <div class="top-label">New Account · 1 Review Ever · Risk Score 8/10</div>
+          <div class="ri-review"><span class="stars">★☆☆☆☆</span><em>"Terrible experience."</em></div>
+          <span class="approach">⚠️ Brief &amp; Professional · Don't Over-Apologize</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -612,7 +728,8 @@
     <div class="walk-cards reveal-stagger">
       <!-- Card 1: Email -->
       <div class="wcard">
-        <span class="tag">Step 1 · New Review Detected</span>
+        <span class="tag">Step 1 · Review Detected &amp; Analyzed</span>
+        <span class="step-label">🔍 Reviewer analyzed <span class="sep">·</span> ✅ Quality checked <span class="sep">·</span> Ready for your approval</span>
         <div class="mockup email-mock">
           <div class="head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="title">Inbox</span></div>
           <div class="body">
@@ -731,7 +848,7 @@
       </div>
     </div>
 
-    <p class="help">Questions about pricing? Email us at <a href="/cdn-cgi/l/email-protection#4e272028210e3c2b3e223739272029602f27"><span class="__cf_email__" data-cfemail="771e191118370512071b0e001e191059161e">[email&#160;protected]</span></a></p>
+    <p class="help">Questions about pricing? Email us at <a href="/cdn-cgi/l/email-protection#771e191118370512071b0e001e191059161e"><span class="__cf_email__" data-cfemail="deb7b0b8b19eacbbaeb2a7a9b7b0b9f0bfb7">[email&#160;protected]</span></a></p>
   </div>
 </section>
 
@@ -789,7 +906,21 @@
           Can I cancel anytime?
           <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
-        <div class="faq-a"><div class="inner">Yes, absolutely. No contracts, no cancellation fees, no questions asked. Cancel anytime by emailing <a href="/cdn-cgi/l/email-protection#a1c8cfc7cee1d3c4d1cdd8d6c8cfc68fc0c8" style="color:var(--orange);font-weight:600"><span class="__cf_email__" data-cfemail="0b62656d644b796e7b67727c62656c256a62">[email&#160;protected]</span></a>.</div></div>
+        <div class="faq-a"><div class="inner">Yes, absolutely. No contracts, no cancellation fees, no questions asked. Cancel anytime by emailing <a href="/cdn-cgi/l/email-protection#d8b1b6beb798aabda8b4a1afb1b6bff6b9b1" style="color:var(--orange);font-weight:600"><span class="__cf_email__" data-cfemail="f891969e97b88a9d8894818f91969fd69991">[email&#160;protected]</span></a>.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Do you treat all reviews the same?
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="inner">No. We analyze every reviewer before crafting a response. Yelp Elite members, loyal returning customers, and first-time visitors all receive responses calibrated specifically to them. High-influence reviewers get priority responses within 5 minutes.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Will my reviews be handled on other platforms besides Yelp?
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="inner">Yelp is our focus right now and we do it exceptionally well. Google Reviews, Facebook, and TripAdvisor are coming soon. When you're ready to expand, we'll be ready too.</div></div>
       </div>
     </div>
   </div>
@@ -805,13 +936,13 @@
   </div>
   <div class="container reveal">
     <h2 class="section-title">Ready to Give Your Reviews a Wing?</h2>
-    <p class="lede">Join Orange County restaurant owners who respond to every Yelp review without lifting a finger.</p>
+    <p class="lede">Join Orange County restaurant owners who respond to every Yelp review with intelligence, speed, and a personal touch.</p>
     <div class="ctas">
       <a class="btn btn-primary btn-lg" href="#pricing">
         Start 14-Day Free Trial
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
       </a>
-      <a class="btn btn-ghost-white btn-lg" href="/cdn-cgi/l/email-protection#e1888f878ea19384918d9896888f86cf8088">
+      <a class="btn btn-ghost-white btn-lg" href="/cdn-cgi/l/email-protection#e48d8a828ba4968194889d938d8a83ca858d">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
         Book a Free Setup Call
       </a>
@@ -834,9 +965,9 @@
           </span>
           <span class="brand-word"><span class="reply">Reply</span> <span class="wing">Wing</span></span>
         </a>
-        <p class="tagline">Your AI Wingman for Yelp Reviews.</p>
+        <p class="tagline">Intelligent Review Responses for Restaurant Owners.</p>
         <div class="meta">
-          <a href="/cdn-cgi/l/email-protection#046d6a626b44766174687d736d6a632a656d"><span class="__cf_email__" data-cfemail="741d1a121b34061104180d031d1a135a151d">[email&#160;protected]</span></a><br/>
+          <a href="/cdn-cgi/l/email-protection#f69f989099b68493869a8f819f9891d8979f"><span class="__cf_email__" data-cfemail="8fe6e1e9e0cffdeaffe3f6f8e6e1e8a1eee6">[email&#160;protected]</span></a><br/>
           replywing.ai
         </div>
       </div>
@@ -847,7 +978,7 @@
           <li><a href="#features">Features</a></li>
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#faq">FAQ</a></li>
-          <li><a href="/cdn-cgi/l/email-protection#71181f171e310314011d0806181f165f1018">Contact</a></li>
+          <li><a href="/cdn-cgi/l/email-protection#a7cec9c1c8e7d5c2d7cbded0cec9c089c6ce">Contact</a></li>
         </ul>
       </div>
       <div>

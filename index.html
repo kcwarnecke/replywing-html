@@ -635,6 +635,42 @@
   .plan ul li:first-child { border-top: 1px solid var(--line); padding-top: 16px; }
   .plan.featured ul li:first-child { border-top-color: var(--line-dark); }
 
+  /* ---------- ROI ---------- */
+  .roi-section { background: var(--ink); color: var(--paper); position: relative; overflow: hidden; }
+  .roi-section .section-head h2 { color: var(--paper); }
+  .roi-section .eyebrow { color: rgba(244,241,236,0.5); }
+  .roi-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 860px) { .roi-stats { grid-template-columns: 1fr; } }
+  .roi-card {
+    background: rgba(244,241,236,0.04);
+    border: 1px solid var(--line-dark);
+    border-radius: 20px;
+    padding: 34px 30px 30px;
+    display: flex; flex-direction: column; gap: 14px;
+    transition: transform .25s ease, border-color .25s ease, background .25s ease;
+  }
+  .roi-card:hover { transform: translateY(-3px); border-color: rgba(242,92,58,0.5); background: rgba(244,241,236,0.06); }
+  .roi-card .roi-num {
+    font-size: clamp(46px, 5.4vw, 64px);
+    font-weight: 600; letter-spacing: -0.04em; line-height: 0.95;
+    color: var(--coral);
+  }
+  .roi-card .roi-label {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(244,241,236,0.55); font-weight: 600;
+    padding-bottom: 14px; border-bottom: 1px solid var(--line-dark);
+  }
+  .roi-card p { margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(244,241,236,0.78); }
+  .roi-copy {
+    margin-top: 56px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    max-width: 1000px;
+  }
+  @media (max-width: 860px) { .roi-copy { grid-template-columns: 1fr; gap: 22px; margin-top: 40px; } }
+  .roi-copy p { margin: 0; font-size: 15px; line-height: 1.7; color: rgba(244,241,236,0.7); }
+  .roi-copy p strong { color: var(--paper); font-weight: 600; }
+  .roi-copy p .serif-italic { color: var(--coral); }
+
   /* ---------- FAQ ---------- */
   .faq-grid { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 56px; }
   @media (max-width: 860px) { .faq-grid { grid-template-columns: 1fr; gap: 28px; } }
@@ -1295,8 +1331,42 @@
     </div>
 
     <p style="text-align:center; margin-top:36px; font-size:13.5px; color:var(--muted);">
-      Questions about pricing? Email <a href="/cdn-cgi/l/email-protection#80e8e5ececefc0f2e5f0ecf9f7e9eee7aee1e9" style="color:var(--coral);"><span class="__cf_email__" data-cfemail="4d25282121220d3f283d21343a24232a632c24">[email&#160;protected]</span></a>
+      Questions about pricing? Email <a href="/cdn-cgi/l/email-protection#b7ded9d1d8f7c5d2c7dbcec0ded9d099d6de" style="color:var(--coral);"><span class="__cf_email__" data-cfemail="6900070f06291b0c1905101e00070e470800">[email&#160;protected]</span></a>
     </p>
+  </div>
+</section>
+
+<!-- ROI -->
+<section class="roi-section" id="roi">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">ROI</span>
+      <h2 class="h2" style="max-width:18ch;">How Reply Wing <span class="serif-italic" style="color:var(--coral);">pays for itself.</span></h2>
+    </div>
+
+    <div class="roi-stats">
+      <div class="roi-card">
+        <div class="roi-num">5–10 hrs</div>
+        <div class="roi-label">Saved per week</div>
+        <p>Stop hand-writing replies. Reply Wing drafts every response for you to approve — reclaiming hours back into actually running your restaurant.</p>
+      </div>
+      <div class="roi-card">
+        <div class="roi-num">2–3×</div>
+        <div class="roi-label">Local SEO visibility</div>
+        <p>Google's algorithm weighs the recency and consistency of review responses as a top local ranking signal. Reply consistently, climb the map pack.</p>
+      </div>
+      <div class="roi-card">
+        <div class="roi-num">45%</div>
+        <div class="roi-label">More customer inquiries</div>
+        <p>Businesses that actively respond to reviews report up to 45% more customer inquiries than those that leave their reviews unanswered.</p>
+      </div>
+    </div>
+
+    <div class="roi-copy">
+      <p>At <strong>TBD/month</strong>, Reply Wing pays for itself the moment it wins back a single customer. One recovered reservation, one diner who chose you because you answered — and the month is already covered.</p>
+      <p>The compounding is where it gets serious. <strong>Time saved every week</strong> and <strong>SEO momentum</strong> stack month over month: more visibility brings more reviews, more responses lift you higher, and the gap between you and the restaurant down the street keeps widening.</p>
+      <p>Most businesses leave their reviews <strong>completely unmanaged</strong> — which actively <em class="serif-italic">hurts</em> their local search ranking. Showing up, on time, in your voice, isn't a nice-to-have. It's the cheapest growth lever you have.</p>
+    </div>
   </div>
 </section>
 
@@ -1307,7 +1377,7 @@
       <div>
         <span class="eyebrow">FAQ</span>
         <h2 class="h2" style="margin-top:18px; max-width:10ch;">Frequently asked.</h2>
-        <p class="lede" style="margin-top:18px;">Still curious? Email <a href="/cdn-cgi/l/email-protection#4f272a2323200f3d2a3f233638262128612e26" style="color:var(--coral); text-decoration:underline;"><span class="__cf_email__" data-cfemail="6008050c0c0f201205100c1917090e074e0109">[email&#160;protected]</span></a>.</p>
+        <p class="lede" style="margin-top:18px;">Still curious? Email <a href="/cdn-cgi/l/email-protection#94fdfaf2fbd4e6f1e4f8ede3fdfaf3baf5fd" style="color:var(--coral); text-decoration:underline;"><span class="__cf_email__" data-cfemail="345d5a525b74465144584d435d5a531a555d">[email&#160;protected]</span></a>.</p>
       </div>
       <div>
         <details class="faq" open>
@@ -1360,7 +1430,7 @@
       <p>Join the Orange County restaurant owners who reply to every Yelp review — with intelligence, speed, and a personal touch.</p>
       <div class="cta-row">
         <a class="btn btn-primary btn-lg" href="#pricing">Start 14-day free trial <span class="arrow">→</span></a>
-        <a class="btn btn-ghost btn-lg" href="/cdn-cgi/l/email-protection#4a222f2626250a382f3a26333d23242d642b23">Book a setup call</a>
+        <a class="btn btn-ghost btn-lg" href="/cdn-cgi/l/email-protection#563f383039162433263a2f213f383178373f">Book a setup call</a>
       </div>
       <div class="micro">No credit card · Free setup included · Cancel anytime</div>
     </div>
@@ -1378,7 +1448,7 @@
         </a>
         <p>Intelligent Yelp review responses for restaurant owners.</p>
         <p style="margin-top:16px;">
-          <a href="/cdn-cgi/l/email-protection#7c14191010133c0e190c10050b15121b521d15" style="color:var(--coral);"><span class="__cf_email__" data-cfemail="c1a9a4adadae81b3a4b1adb8b6a8afa6efa0a8">[email&#160;protected]</span></a><br/>
+          <a href="/cdn-cgi/l/email-protection#3c55525a537c4e594c50454b55525b125d55" style="color:var(--coral);"><span class="__cf_email__" data-cfemail="1871767e77586a7d6874616f71767f367971">[email&#160;protected]</span></a><br/>
           replywing.ai
         </p>
       </div>
@@ -1397,7 +1467,7 @@
         <ul>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a href="/cdn-cgi/l/email-protection#4d25282121220d3f283d21343a24232a632c24">Book a call</a></li>
+          <li><a href="/cdn-cgi/l/email-protection#e68f888089a69483968a9f918f8881c8878f">Book a call</a></li>
         </ul>
       </div>
       <div>

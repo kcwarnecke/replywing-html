@@ -1,0 +1,1421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Reply Wing — Yelp review replies on autopilot</title>
+<meta name="description" content="Reply Wing's AI drafts professional responses to every Yelp review. You approve in seconds. Done." />
+<link rel="icon" type="image/png" href="assets/favicon-64.png" />
+<meta property="og:title" content="Reply Wing — Yelp review replies on autopilot" />
+<meta property="og:description" content="AI-drafted, you-approved Yelp review replies for restaurant owners." />
+<meta property="og:image" content="assets/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #15171A;
+    --ink-2: #2B2D31;
+    --paper: #F4F1EC;
+    --paper-2: #ECE8E1;
+    --coral: #F25C3A;
+    --coral-soft: #FBD9CE;
+    --muted: #7A7670;
+    --line: rgba(21,23,26,0.10);
+    --line-dark: rgba(244,241,236,0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    line-height: 1.5;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- TYPE ---------- */
+  .display {
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+  }
+  .serif-italic {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .eyebrow {
+    font-size: 11.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .h2 { font-size: clamp(38px, 5.4vw, 76px); font-weight: 600; letter-spacing: -0.035em; line-height: 1; }
+  .h3 { font-size: clamp(22px, 2vw, 28px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+  .lede { font-size: clamp(17px, 1.4vw, 20px); color: var(--ink-2); max-width: 56ch; line-height: 1.55; }
+  .small { font-size: 13px; color: var(--muted); }
+
+  /* ---------- LAYOUT ---------- */
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 96px 0; }
+  @media (max-width: 720px) {
+    section { padding: 64px 0; }
+    .wrap { padding: 0 20px; }
+  }
+
+  /* ---------- WORDMARK ---------- */
+  .wordmark { font-weight: 600; letter-spacing: -0.035em; display: inline-flex; align-items: baseline; line-height: 1; white-space: nowrap; }
+  .wordmark .accent { color: var(--coral); }
+
+  /* ---------- NAV ---------- */
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(244,241,236,0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
+  nav.top .brand { display: flex; align-items: center; gap: 12px; }
+  nav.top .brand svg { width: 32px; height: 32px; }
+  nav.top .brand .wordmark { font-size: 20px; }
+  nav.top .links { display: flex; gap: 28px; font-size: 14px; color: var(--ink-2); }
+  nav.top .links a:hover { color: var(--coral); }
+  nav.top .cta-group { display: flex; gap: 10px; align-items: center; }
+  @media (max-width: 860px) { nav.top .links { display: none; } }
+
+  /* ---------- BUTTONS ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 11px 18px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+    white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: var(--coral); }
+  .btn-ghost { color: var(--ink); border-color: var(--line); background: transparent; }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn-coral { background: var(--coral); color: white; }
+  .btn-coral:hover { background: var(--ink); }
+  .btn .arrow { transition: transform .2s ease; }
+  .btn:hover .arrow { transform: translateX(3px); }
+  .btn-lg { font-size: 15px; padding: 14px 22px; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding: 80px 0 80px;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* layered hero background */
+  .hero::before {
+    /* warm radial wash */
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(800px 480px at 88% 18%, rgba(242,92,58,0.10), transparent 70%),
+      radial-gradient(700px 500px at 6% 92%, rgba(21,23,26,0.06), transparent 70%);
+    z-index: -2;
+    pointer-events: none;
+  }
+  .hero::after {
+    /* fine dot grid texture */
+    content: "";
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(21,23,26,0.10) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, transparent 30%, black 90%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, transparent 30%, black 90%);
+    z-index: -2;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .hero-bg .big-bird {
+    position: absolute;
+    right: -90px; top: 60px;
+    width: 520px; height: 520px;
+    opacity: 0.06;
+    transform: rotate(-8deg);
+  }
+  .hero-bg .arc {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+  }
+  .hero-bg .flock { position: absolute; }
+  .hero-bg .flock.f1 { left: 4%; top: 14%; width: 28px; opacity: 0.4; transform: rotate(-10deg); }
+  .hero-bg .flock.f2 { left: 12%; top: 6%; width: 18px; opacity: 0.28; transform: rotate(-4deg); }
+  .hero-bg .flock.f3 { left: 48%; top: 78%; width: 22px; opacity: 0.35; transform: rotate(-14deg); }
+  .hero-bg .flock.f4 { right: 38%; top: 8%; width: 14px; opacity: 0.22; transform: rotate(4deg); }
+
+  /* corner crosshairs — editorial print feel */
+  .hero .corner {
+    position: absolute;
+    width: 14px; height: 14px;
+    z-index: -1;
+    opacity: 0.5;
+  }
+  .hero .corner::before, .hero .corner::after {
+    content: ""; position: absolute; background: var(--ink-2);
+  }
+  .hero .corner::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+  .hero .corner::after { top: 50%; left: 0; right: 0; height: 1px; }
+  .hero .corner.tl { left: 18px; top: 18px; }
+  .hero .corner.tr { right: 18px; top: 18px; }
+  .hero .corner.bl { left: 18px; bottom: 18px; }
+  .hero .corner.br { right: 18px; bottom: 18px; }
+
+  /* eyebrow chip — give it a backdrop */
+  .hero .eyebrow-chip {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 14px 8px 8px;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-2); font-weight: 500;
+    white-space: nowrap;
+  }
+  .hero .eyebrow-chip .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 999px; background: var(--ink);
+  }
+  .hero .eyebrow-chip .badge svg { width: 12px; height: 12px; }
+
+  /* ticker between text and card on wide screens */
+  .hero .ticker {
+    margin-top: 28px;
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 10px 16px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 999px;
+    font-size: 12.5px; letter-spacing: 0.06em;
+    box-shadow: 0 14px 30px -18px rgba(21,23,26,0.45);
+  }
+  .hero .ticker .num {
+    font-weight: 600;
+    color: var(--coral);
+    font-variant-numeric: tabular-nums;
+  }
+  .hero .ticker .sep { width: 1px; height: 14px; background: rgba(244,241,236,0.2); }
+
+  .hero .grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 56px;
+    align-items: end;
+  }
+  @media (max-width: 980px) { .hero .grid { grid-template-columns: 1fr; gap: 40px; } }
+  .hero h1 {
+    font-size: clamp(48px, 7.4vw, 112px);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 0.92;
+    margin: 0;
+  }
+  .hero h1 .word-stack { display: block; }
+  .hero h1 .it { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; color: var(--coral); position: relative; }
+  /* coral highlight bar under italic word */
+  .hero h1 .it::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 6%;
+    bottom: 0.05em;
+    height: 0.22em;
+    background: var(--coral);
+    opacity: 0.18;
+    z-index: -1;
+    border-radius: 4px;
+  }
+  .hero .sub { margin-top: 32px; max-width: 44ch; font-size: clamp(16px, 1.3vw, 19px); color: var(--ink-2); line-height: 1.55; }
+  .hero .cta-row { margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero .micro { margin-top: 24px; display: flex; gap: 24px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+  .hero .micro span::before { content: "● "; color: var(--coral); }
+
+  /* trust strip */
+  .trust-strip {
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 18px 32px;
+    font-size: 12.5px; color: var(--muted);
+  }
+  .trust-strip .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.5);
+  }
+  .trust-strip .pill .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--coral); }
+
+  /* ---------- HERO PROOF CARD ---------- */
+  .proof {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 22px;
+    padding: 28px;
+    position: relative;
+    box-shadow: 0 40px 80px -50px rgba(0,0,0,0.5);
+  }
+  .proof .proof-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 18px; border-bottom: 1px solid var(--line-dark);
+    margin-bottom: 18px;
+  }
+  .proof .proof-head .label { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.55; }
+  .proof .proof-head .live { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--coral); font-weight: 500; }
+  .proof .proof-head .live .pulse {
+    width: 8px; height: 8px; border-radius: 999px; background: var(--coral);
+    box-shadow: 0 0 0 0 rgba(242,92,58,0.6);
+    animation: pulse 1.6s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(242,92,58,0.6); }
+    70% { box-shadow: 0 0 0 12px rgba(242,92,58,0); }
+    100% { box-shadow: 0 0 0 0 rgba(242,92,58,0); }
+  }
+  .review-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--line-dark);
+  }
+  .review-row:last-of-type { border-bottom: none; }
+  .review-row .stars { color: var(--coral); font-size: 14px; letter-spacing: 1px; }
+  .review-row .stars .dim { color: rgba(244,241,236,0.25); }
+  .review-row .quote { font-size: 14px; color: rgba(244,241,236,0.9); line-height: 1.4; }
+  .review-row .meta { font-size: 11px; opacity: 0.5; margin-top: 2px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .review-row .status { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .status.sent { color: rgba(244,241,236,0.55); }
+  .status.draft { color: var(--coral); }
+
+  .proof-foot {
+    margin-top: 16px; display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 12px; color: rgba(244,241,236,0.55);
+  }
+  .proof-foot .big { color: var(--paper); font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+  .proof-foot .big small { font-size: 12px; color: rgba(244,241,236,0.55); margin-left: 6px; font-weight: 400; letter-spacing: 0; }
+
+  /* paper-bird decorations */
+  .bird-deco { position: absolute; pointer-events: none; opacity: 0.95; }
+
+  /* ---------- STATS ---------- */
+  .stats {
+    background: var(--paper-2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 56px 0;
+  }
+  .stats .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  @media (max-width: 860px) { .stats .row { grid-template-columns: repeat(2, 1fr); } }
+  .stat .num { font-size: clamp(42px, 4.6vw, 64px); font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
+  .stat .num .unit { color: var(--coral); }
+  .stat .lbl { margin-top: 12px; font-size: 13px; color: var(--muted); max-width: 22ch; line-height: 1.45; }
+
+  /* ---------- PROBLEM ---------- */
+  .section-head { max-width: 880px; margin-bottom: 64px; }
+  .section-head .eyebrow { margin-bottom: 18px; display: inline-block; }
+  .section-head h2 { margin: 0 0 18px; }
+
+  .three-up { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 860px) { .three-up { grid-template-columns: 1fr; } }
+  .card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px;
+  }
+  .card .num-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-variant-numeric: tabular-nums;
+    font-size: 12px; color: var(--muted); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  .card .num-tag .n { color: var(--coral); font-weight: 600; }
+  .card h3 { margin: 0 0 10px; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .card p { margin: 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.55; }
+
+  /* ---------- HOW ---------- */
+  .how-section { background: var(--ink); color: var(--paper); position: relative; overflow: hidden; }
+  .how-section .section-head h2 { color: var(--paper); }
+  .how-section .eyebrow { color: rgba(244,241,236,0.5); }
+  .how-section .lede { color: rgba(244,241,236,0.7); }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line-dark); }
+  @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+  .step {
+    padding: 36px 28px 36px 0;
+    border-right: 1px solid var(--line-dark);
+    position: relative;
+  }
+  .step:nth-child(n+2) { padding-left: 28px; }
+  .step:last-child { border-right: none; }
+  @media (max-width: 860px) {
+    .step { border-right: none; border-bottom: 1px solid var(--line-dark); padding: 28px 0; }
+    .step:nth-child(n+2) { padding-left: 0; }
+    .step:last-child { border-bottom: none; }
+  }
+  .step .n { font-size: 12px; color: var(--coral); letter-spacing: 0.18em; font-weight: 600; }
+  .step h3 { margin: 18px 0 12px; font-size: 24px; color: var(--paper); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+  .step p { color: rgba(244,241,236,0.7); font-size: 14.5px; margin: 0; line-height: 1.6; }
+  .step .pill {
+    margin-top: 18px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(244,241,236,0.6);
+    padding: 6px 12px;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+  }
+  .step .pill .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--coral); }
+
+  /* ---------- FEATURES ---------- */
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 860px) { .features-grid { grid-template-columns: 1fr; } }
+  .feature {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 30px;
+    display: flex;
+    gap: 22px;
+    align-items: flex-start;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .feature:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -28px rgba(21,23,26,0.25);
+    border-color: rgba(21,23,26,0.18);
+  }
+  .feature .ft-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    flex: none;
+    display: grid; place-items: center;
+    background: var(--coral-soft);
+    color: var(--coral);
+  }
+  .feature .ft-icon svg { width: 24px; height: 24px; }
+  .feature .ft-body { flex: 1; }
+  .feature h3 { margin: 0 0 8px; font-size: 20px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+  .feature p { margin: 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.6; }
+
+  /* ---------- INTELLIGENCE ---------- */
+  .intel-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: start; }
+  @media (max-width: 980px) { .intel-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .reviewer-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .reviewer-card .badge-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .reviewer-card .badge {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 999px; font-weight: 500;
+  }
+  .badge.elite { background: var(--ink); color: var(--paper); }
+  .badge.loyal { background: var(--coral-soft); color: #8a2812; }
+  .badge.risk { background: #FFE7BD; color: #6B4400; }
+  .badge.priority { background: var(--coral); color: white; }
+  .reviewer-card .ident { font-size: 12px; color: var(--muted); margin-bottom: 12px; letter-spacing: 0.04em; }
+  .reviewer-card .quote { font-family: "Instrument Serif", serif; font-style: italic; font-size: 19px; line-height: 1.35; color: var(--ink); margin: 0 0 14px; letter-spacing: -0.005em; }
+  .reviewer-card .stars { color: var(--coral); letter-spacing: 2px; margin-bottom: 8px; font-size: 14px; }
+  .reviewer-card .stars .dim { color: rgba(21,23,26,0.18); }
+  .reviewer-card .response-hint {
+    font-size: 12.5px; color: var(--ink-2);
+    padding: 10px 12px; background: var(--paper); border-radius: 8px;
+    display: flex; gap: 10px; align-items: center;
+  }
+  .reviewer-card .response-hint .tag {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--coral); font-weight: 600;
+  }
+
+  /* ---------- WORKFLOW (sheet) ---------- */
+  .sheet {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px -50px rgba(0,0,0,0.25);
+  }
+  .sheet-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 18px;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--line);
+    font-size: 13px; color: var(--ink-2);
+  }
+  .sheet-head .dots { display: flex; gap: 6px; }
+  .sheet-head .dots span { width: 10px; height: 10px; border-radius: 999px; }
+  .sheet-head .dots .r { background: #E76F51; }
+  .sheet-head .dots .y { background: #E9C46A; }
+  .sheet-head .dots .g { background: #84A98C; }
+  .sheet-head .title { margin-left: 8px; font-weight: 500; }
+  table.sheet-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.sheet-tbl th, table.sheet-tbl td {
+    padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  table.sheet-tbl th { font-weight: 500; color: var(--muted); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; background: var(--paper); }
+  table.sheet-tbl td { color: var(--ink-2); }
+  table.sheet-tbl tr:last-child td { border-bottom: none; }
+  .pill-status {
+    display: inline-block;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+    padding: 4px 9px; border-radius: 999px;
+  }
+  .pill-status.approved { background: #D6EBD3; color: #1F5B1F; }
+  .pill-status.pending { background: #FFEEC7; color: #6B4400; }
+  .pill-status.live { background: var(--coral); color: white; }
+
+  /* ---------- ROADMAP ---------- */
+  .roadmap {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    gap: 14px;
+    align-items: stretch;
+  }
+  @media (max-width: 980px) {
+    .roadmap { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .roadmap .rm-arrow { display: none; }
+  }
+  @media (max-width: 560px) {
+    .roadmap { grid-template-columns: 1fr; }
+  }
+  .platform {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px 22px 22px;
+    display: flex; flex-direction: column; gap: 14px;
+    position: relative;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .platform:hover { transform: translateY(-3px); box-shadow: 0 20px 44px -28px rgba(21,23,26,0.28); border-color: rgba(21,23,26,0.2); }
+  .platform.live { background: var(--ink); color: var(--paper); border-color: var(--ink); box-shadow: 0 24px 60px -36px rgba(242,92,58,0.6); }
+  .platform.live h3 { color: var(--paper); }
+  .platform.live p { color: rgba(244,241,236,0.7); }
+  .platform.next { border-color: var(--coral); border-width: 2px; padding: 23px 21px 21px; }
+  .platform.soon, .platform.planned { border-style: dashed; background: transparent; }
+  .platform.planned { opacity: 0.78; }
+
+  .platform .rm-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .platform .rm-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--coral-soft); color: var(--coral);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .platform .rm-icon svg { width: 20px; height: 20px; }
+  .platform.live .rm-icon { background: var(--coral); color: white; }
+  .platform.soon .rm-icon, .platform.planned .rm-icon { background: rgba(21,23,26,0.06); color: var(--muted); }
+
+  .platform .rm-status {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
+    padding: 5px 10px; border-radius: 999px;
+    background: rgba(21,23,26,0.06); color: var(--muted);
+    white-space: nowrap;
+  }
+  .platform.live .rm-status { background: rgba(244,241,236,0.12); color: var(--paper); }
+  .platform.next .rm-status { background: var(--coral); color: white; }
+  .platform .rm-pulse {
+    width: 7px; height: 7px; border-radius: 999px; background: var(--coral);
+    box-shadow: 0 0 0 0 rgba(242,92,58,0.6);
+    animation: pulse 1.6s ease-out infinite;
+  }
+
+  .platform h3 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+  .platform p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+  .platform.soon p, .platform.planned p { color: var(--muted); }
+
+  .platform .rm-eta {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 500;
+  }
+  .platform.live .rm-eta { border-top-color: var(--line-dark); color: rgba(244,241,236,0.55); }
+
+  .rm-arrow {
+    align-self: center;
+    width: 28px; height: 28px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--coral);
+  }
+  .rm-arrow svg { width: 22px; height: 22px; }
+
+  .rm-foot {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;
+  }
+  .rm-foot .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    background: var(--coral-soft); color: #8a2812;
+    border-radius: 999px;
+    font-size: 13px; font-weight: 500;
+  }
+  .rm-foot .badge::before {
+    content: ""; width: 6px; height: 6px; border-radius: 999px; background: var(--coral);
+  }
+
+  /* ---------- PRICING ---------- */
+  .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 860px; margin: 0 auto; }
+  @media (max-width: 720px) { .pricing-grid { grid-template-columns: 1fr; } }
+  .plan {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 36px;
+    position: relative;
+  }
+  .plan.featured { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .plan .tag {
+    position: absolute; top: -12px; left: 32px;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
+    background: var(--coral); color: white;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .plan h3 { margin: 0 0 6px; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .plan .desc { font-size: 14px; color: inherit; opacity: 0.7; margin-bottom: 24px; }
+  .plan.featured .desc { color: rgba(244,241,236,0.7); }
+  .price { display: flex; align-items: baseline; gap: 8px; margin-bottom: 28px; }
+  .price .num { font-size: 56px; font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
+  .price .per { font-size: 14px; opacity: 0.6; }
+  .price .it { font-family: "Instrument Serif", serif; font-style: italic; font-size: 42px; font-weight: 400; color: var(--muted); }
+  .plan.featured .price .it { color: rgba(244,241,236,0.55); }
+  .plan ul { list-style: none; padding: 0; margin: 0 0 28px; }
+  .plan ul li {
+    padding: 10px 0;
+    border-top: 1px dashed var(--line);
+    font-size: 14px;
+    display: flex; gap: 10px; align-items: flex-start;
+    line-height: 1.45;
+  }
+  .plan.featured ul li { border-color: var(--line-dark); color: rgba(244,241,236,0.9); }
+  .plan ul li::before {
+    content: "→"; color: var(--coral); font-weight: 600;
+    flex-shrink: 0;
+  }
+  .plan ul li:first-child { border-top: 1px solid var(--line); padding-top: 16px; }
+  .plan.featured ul li:first-child { border-top-color: var(--line-dark); }
+
+  /* ---------- FAQ ---------- */
+  .faq-grid { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 56px; }
+  @media (max-width: 860px) { .faq-grid { grid-template-columns: 1fr; gap: 28px; } }
+  details.faq {
+    border-bottom: 1px solid var(--line);
+    padding: 22px 0;
+  }
+  details.faq summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq .toggle {
+    width: 30px; height: 30px; flex-shrink: 0;
+    border-radius: 999px; border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: var(--ink-2);
+    transition: background .15s ease, color .15s ease, transform .25s ease, border-color .15s ease;
+  }
+  details.faq[open] .toggle { background: var(--ink); color: var(--paper); border-color: var(--ink); transform: rotate(45deg); }
+  details.faq[open] summary { color: var(--coral); }
+  details.faq .body {
+    margin-top: 14px;
+    color: var(--ink-2);
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 64ch;
+  }
+
+  /* ---------- BIG CTA ---------- */
+  .big-cta {
+    background: var(--coral);
+    color: white;
+    border-radius: 28px;
+    padding: 80px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (max-width: 720px) { .big-cta { padding: 56px 28px; border-radius: 20px; } }
+  .big-cta h2 { font-size: clamp(36px, 5.4vw, 76px); font-weight: 600; letter-spacing: -0.035em; line-height: 0.96; margin: 0 0 18px; max-width: 18ch; }
+  .big-cta h2 .it { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400; }
+  .big-cta p { font-size: 17px; max-width: 56ch; opacity: 0.92; margin: 0 0 36px; }
+  .big-cta .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .big-cta .btn-primary { background: var(--ink); color: var(--paper); }
+  .big-cta .btn-primary:hover { background: white; color: var(--ink); }
+  .big-cta .btn-ghost { border-color: rgba(255,255,255,0.5); color: white; }
+  .big-cta .btn-ghost:hover { background: white; color: var(--coral); border-color: white; }
+  .big-cta .micro { margin-top: 24px; font-size: 13px; opacity: 0.85; }
+  .big-cta .bird-bg { position: absolute; right: -40px; bottom: -40px; width: 360px; opacity: 0.18; }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 0 36px;
+  }
+  footer .grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--line-dark);
+  }
+  @media (max-width: 860px) { footer .grid { grid-template-columns: 1fr 1fr; } }
+  footer h4 { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(244,241,236,0.5); font-weight: 500; margin: 0 0 16px; }
+  footer ul { list-style: none; padding: 0; margin: 0; }
+  footer ul li { padding: 6px 0; font-size: 14px; color: rgba(244,241,236,0.85); }
+  footer ul li a:hover { color: var(--coral); }
+  footer .brand-col .wordmark { font-size: 22px; }
+  footer .brand-col p { font-size: 14px; color: rgba(244,241,236,0.65); margin: 18px 0 0; max-width: 32ch; line-height: 1.55; }
+  footer .bottom { display: flex; justify-content: space-between; align-items: baseline; padding-top: 28px; flex-wrap: wrap; gap: 16px; }
+  footer .bottom .legal { font-size: 12px; color: rgba(244,241,236,0.5); max-width: 60ch; line-height: 1.5; }
+  footer .bottom .copy { font-size: 12px; color: rgba(244,241,236,0.5); }
+
+  /* paper bird drift animation */
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+    50% { transform: translate(8px, -8px) rotate(-2deg); }
+  }
+  .drift { animation: drift 6s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<!-- Paper-bird symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bird-ink" viewBox="0 0 200 200">
+      <path d="M 20 96 L 180 36 L 116 100 Z" fill="#15171A"/>
+      <path d="M 116 100 L 180 36 L 132 156 Z" fill="#F25C3A"/>
+      <path d="M 20 96 L 116 100 L 80 132 Z" fill="#15171A" opacity="0.55"/>
+    </symbol>
+    <symbol id="bird-paper" viewBox="0 0 200 200">
+      <path d="M 20 96 L 180 36 L 116 100 Z" fill="#F4F1EC"/>
+      <path d="M 116 100 L 180 36 L 132 156 Z" fill="#F25C3A"/>
+      <path d="M 20 96 L 116 100 L 80 132 Z" fill="#F4F1EC" opacity="0.55"/>
+    </symbol>
+    <symbol id="bird-coral" viewBox="0 0 200 200">
+      <path d="M 20 96 L 180 36 L 116 100 Z" fill="#F25C3A"/>
+      <path d="M 116 100 L 180 36 L 132 156 Z" fill="#F25C3A" opacity="0.78"/>
+      <path d="M 20 96 L 116 100 L 80 132 Z" fill="#F25C3A" opacity="0.45"/>
+    </symbol>
+    <symbol id="bird-white" viewBox="0 0 200 200">
+      <path d="M 20 96 L 180 36 L 116 100 Z" fill="white"/>
+      <path d="M 116 100 L 180 36 L 132 156 Z" fill="white" opacity="0.78"/>
+      <path d="M 20 96 L 116 100 L 80 132 Z" fill="white" opacity="0.45"/>
+    </symbol>
+  </defs>
+</svg>
+
+<a href="index.html" style="position:fixed;bottom:16px;right:16px;z-index:200;background:rgba(21,23,26,0.86);color:#F4F1EC;font:500 10px 'Space Grotesk',sans-serif;letter-spacing:.18em;text-transform:uppercase;padding:7px 12px;border-radius:999px;box-shadow:0 8px 24px -12px rgba(0,0,0,.45);backdrop-filter:blur(6px);text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:8px"><span style="color:#F25C3A">A</span> <span style="opacity:.55">·</span> <span>all variations</span></a>
+
+<!-- NAV -->
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg><use href="#bird-ink"/></svg>
+      <span class="wordmark">reply<span class="accent">wing</span></span>
+    </a>
+    <div class="links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#intelligence">Intelligence</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="cta-group">
+      <a class="btn btn-ghost" href="#contact">Book a call</a>
+      <a class="btn btn-primary" href="#pricing">Start free trial <span class="arrow">→</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <svg class="big-bird" viewBox="0 0 200 200"><use href="#bird-ink"/></svg>
+    <svg class="arc" viewBox="0 0 1400 700" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="arcGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#F25C3A" stop-opacity="0"/>
+          <stop offset="0.55" stop-color="#F25C3A" stop-opacity="0.7"/>
+          <stop offset="1" stop-color="#F25C3A" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="M -40 540 C 280 380, 620 280, 900 220 S 1340 80, 1480 60" fill="none"
+            stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="3 6" />
+      <path d="M -40 600 C 320 460, 700 380, 1000 320 S 1380 200, 1480 180" fill="none"
+            stroke="rgba(21,23,26,0.12)" stroke-width="1" stroke-dasharray="2 8" />
+    </svg>
+    <svg class="flock f1" viewBox="0 0 200 200"><use href="#bird-ink"/></svg>
+    <svg class="flock f2" viewBox="0 0 200 200"><use href="#bird-ink"/></svg>
+    <svg class="flock f3" viewBox="0 0 200 200"><use href="#bird-ink"/></svg>
+    <svg class="flock f4" viewBox="0 0 200 200"><use href="#bird-ink"/></svg>
+  </div>
+  <span class="corner tl"></span>
+  <span class="corner tr"></span>
+  <span class="corner bl"></span>
+  <span class="corner br"></span>
+
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow-chip">
+          <span class="badge"><svg viewBox="0 0 200 200"><use href="#bird-paper"/></svg></span>
+          Powered by Claude AI
+        </span>
+        <h1 style="margin-top:24px;">
+          <span class="word-stack">Every Yelp</span>
+          <span class="word-stack">review deserves</span>
+          <span class="word-stack">a <span class="it">great</span> response.</span>
+        </h1>
+        <p class="sub">
+          You're running a restaurant, not a social media team. Reply Wing's AI drafts professional responses to every Yelp review — you approve in seconds.
+        </p>
+        <div class="ticker">
+          <span><span class="num">12</span> replies sent today</span>
+          <span class="sep"></span>
+          <span><span class="num">5★</span> avg rating</span>
+          <span class="sep"></span>
+          <span><span class="num">2hr</span> avg response</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary btn-lg" href="#pricing">Start 14-day free trial <span class="arrow">→</span></a>
+          <a class="btn btn-ghost btn-lg" href="#contact">Book a setup call</a>
+        </div>
+        <div class="micro">
+          <span>No credit card required</span>
+          <span>Setup in 5 minutes</span>
+          <span>Cancel anytime</span>
+        </div>
+      </div>
+
+      <!-- PROOF CARD -->
+      <div class="proof">
+        <div class="proof-head">
+          <span class="label">Live · Mario's Bistro</span>
+          <span class="live"><span class="pulse"></span>Replying now</span>
+        </div>
+
+        <div class="review-row">
+          <div class="stars">★★★★★</div>
+          <div>
+            <div class="quote">"Amazing carbonara, best in Orange County."</div>
+            <div class="meta">Sarah R. · Elite reviewer</div>
+          </div>
+          <div class="status sent">Sent · 2m</div>
+        </div>
+        <div class="review-row">
+          <div class="stars">★★<span class="dim">★★★</span></div>
+          <div>
+            <div class="quote">"Service was a little slow on a Friday."</div>
+            <div class="meta">Daniel P. · Returning</div>
+          </div>
+          <div class="status sent">Sent · 14m</div>
+        </div>
+        <div class="review-row">
+          <div class="stars">★★★★<span class="dim">★</span></div>
+          <div>
+            <div class="quote">"Great food, will be back soon."</div>
+            <div class="meta">Maya T. · First visit</div>
+          </div>
+          <div class="status draft">Drafting…</div>
+        </div>
+
+        <div class="proof-foot">
+          <span>Today's reviews</span>
+          <span class="big">12<small>responses</small></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-strip">
+      <span class="pill"><span class="dot"></span>Now supporting Yelp</span>
+      <a href="#roadmap" style="font-size:12.5px; color:var(--muted); text-decoration:none; display:inline-flex; align-items:center; gap:6px;">Google · Facebook · TripAdvisor on the roadmap <span style="color:var(--coral);">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats" style="padding-top:48px; padding-bottom:48px;">
+  <div class="wrap">
+    <div class="row">
+      <div class="stat">
+        <div class="num">5<span class="unit">min</span></div>
+        <div class="lbl">High-priority review response time</div>
+      </div>
+      <div class="stat">
+        <div class="num">2<span class="unit">hr</span></div>
+        <div class="lbl">Standard review response time</div>
+      </div>
+      <div class="stat">
+        <div class="num">2<span class="unit">×</span></div>
+        <div class="lbl">Layers of quality control before you see it</div>
+      </div>
+      <div class="stat">
+        <div class="num">100<span class="unit">%</span></div>
+        <div class="lbl">Responses approved by you before posting</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The reality</span>
+      <h2 class="h2">Running a restaurant is hard enough. <span class="serif-italic" style="color:var(--coral);">Yelp shouldn't add to it.</span></h2>
+    </div>
+    <div class="three-up">
+      <div class="card">
+        <div class="num-tag"><span class="n">01</span>The time problem</div>
+        <h3>You don't have a spare minute.</h3>
+        <p>You're working 70-hour weeks. Crafting thoughtful review responses falls to the bottom of the list — every single time.</p>
+      </div>
+      <div class="card">
+        <div class="num-tag"><span class="n">02</span>The words problem</div>
+        <h3>One wrong word goes viral.</h3>
+        <p>Negative reviews especially. The wrong tone turns a complaint into a screenshot — and the pressure to get every reply right is real.</p>
+      </div>
+      <div class="card">
+        <div class="num-tag"><span class="n">03</span>The silence problem</div>
+        <h3>Unanswered reviews hurt you.</h3>
+        <p>53% of diners expect a response within a week. Every silent review tells future customers you don't care.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how-section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2 class="h2" style="max-width:16ch;">From new review to posted response in <span class="serif-italic" style="color:var(--coral);">three steps.</span></h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">01 · Detect</div>
+        <h3>We monitor your Yelp page 24/7.</h3>
+        <p>Our system checks your page every 2 hours. The moment a new review appears, we catch it — day or night.</p>
+        <span class="pill"><span class="dot"></span>New reviews detected within 2 hours</span>
+      </div>
+      <div class="step">
+        <div class="n">02 · Draft</div>
+        <h3>Claude AI drafts a calibrated response.</h3>
+        <p>It doesn't just read the review — it analyzes <em>who</em> left it. Elite reviewers, loyal regulars, and first-timers each get a reply tuned to them.</p>
+        <span class="pill"><span class="dot"></span>Reviewer intelligence built in</span>
+      </div>
+      <div class="step">
+        <div class="n">03 · Post</div>
+        <h3>You approve & post in 15 seconds.</h3>
+        <p>Review the draft in your Google Sheet. Approve, edit, or skip. One click copies it and opens Yelp. Paste and post.</p>
+        <span class="pill"><span class="dot"></span>Your approval, always</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">What you get</span>
+      <h2 class="h2">Everything you need.<br/><span class="serif-italic" style="color:var(--coral);">Nothing you don't.</span></h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="ft-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="ft-body">
+          <h3>Always your voice</h3>
+          <p>Every response is drafted in your restaurant's tone and approved by you before it goes live. No surprises.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ft-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="ft-body">
+          <h3>Lightning fast</h3>
+          <p>Stop letting reviews sit unanswered for days. Our AI responds within hours — your Yelp page stays active.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ft-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        </div>
+        <div class="ft-body">
+          <h3>Google Sheets workflow</h3>
+          <p>No dashboard to learn. Everything lives in a Google Sheet you already know how to use.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ft-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="ft-body">
+          <h3>Fraction of the cost</h3>
+          <p>A social media manager costs $2,000+/month. Reply Wing handles your Yelp reviews for a fraction of that.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ft-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="2.2" fill="currentColor" stroke="none"/><line x1="14.6" y1="14.6" x2="21" y2="21"/></svg>
+        </div>
+        <div class="ft-body">
+          <h3>Reviewer intelligence</h3>
+          <p>We identify Yelp Elite, loyal returning customers, and high-risk profiles — so every reply fits exactly who left it.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ft-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11.5 14.5 16 10"/></svg>
+        </div>
+        <div class="ft-body">
+          <h3>Double quality control</h3>
+          <p>Every AI response is checked by our team before it ever reaches you. Two layers of review, every time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTELLIGENCE -->
+<section id="intelligence" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Reviewer intelligence</span>
+      <h2 class="h2">Not all reviews are <span class="serif-italic" style="color:var(--coral);">created equal.</span></h2>
+      <p class="lede" style="margin-top:18px;">
+        A 5★ from a Yelp Elite with 800 reviews carries more weight than one from a brand-new account. Reply Wing knows the difference.
+      </p>
+    </div>
+
+    <div class="intel-grid">
+      <div>
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.65; max-width:42ch;">
+          We analyze every reviewer before drafting a response — identifying influence, history, and their relationship with your restaurant. The result: replies that are always perfectly calibrated to the person who left them.
+        </p>
+        <div style="margin-top:32px; display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; gap:14px; align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:8px; background:var(--ink); color:var(--paper); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; flex-shrink:0;">E</div>
+            <div>
+              <div style="font-weight:500; font-size:14.5px;">Elite reviewer detected</div>
+              <div class="small">High influence — replies in 5 minutes, detailed and warm.</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:14px; align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:8px; background:var(--coral-soft); color:#8a2812; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; flex-shrink:0;">L</div>
+            <div>
+              <div style="font-weight:500; font-size:14.5px;">Loyal returning customer</div>
+              <div class="small">Acknowledged by name — warm, personal, builds the relationship.</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:14px; align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:8px; background:#FFE7BD; color:#6B4400; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; flex-shrink:0;">R</div>
+            <div>
+              <div style="font-weight:500; font-size:14.5px;">High-risk profile</div>
+              <div class="small">Brief, professional, factual — never escalates a one-off complaint.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="reviewer-card">
+          <div class="badge-row">
+            <span class="badge elite">Elite · 847 reviews</span>
+            <span class="badge priority">Priority response</span>
+          </div>
+          <div class="ident">Influencer score 9/10</div>
+          <div class="stars">★★<span class="dim">★★★</span></div>
+          <p class="quote">"Waited 45 minutes for a table on a Friday."</p>
+          <div class="response-hint"><span class="tag">Draft</span> Detailed, empathetic, owns the wait.</div>
+        </div>
+        <div class="reviewer-card">
+          <div class="badge-row">
+            <span class="badge loyal">Returning · 3rd visit</span>
+          </div>
+          <div class="ident">Low risk · known regular</div>
+          <div class="stars">★★★★★</div>
+          <p class="quote">"Best carbonara in Orange County."</p>
+          <div class="response-hint"><span class="tag">Draft</span> Warm, personal, by name — Chef gets a shout.</div>
+        </div>
+        <div class="reviewer-card">
+          <div class="badge-row">
+            <span class="badge risk">New account · 1 review</span>
+          </div>
+          <div class="ident">Risk score 8/10</div>
+          <div class="stars">★<span class="dim">★★★★</span></div>
+          <p class="quote">"Terrible experience."</p>
+          <div class="response-hint"><span class="tag">Draft</span> Brief, professional — does not over-apologize.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The workflow</span>
+      <h2 class="h2">No dashboards. <span class="serif-italic" style="color:var(--coral);">Just a Google Sheet.</span></h2>
+      <p class="lede" style="margin-top:18px;">A sheet you already know how to use — doing the heavy lifting.</p>
+    </div>
+
+    <div class="sheet">
+      <div class="sheet-head">
+        <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+        <span class="title">Reviews · Mario's Bistro</span>
+        <span style="margin-left:auto; opacity:0.6;">Last sync · 2 min ago</span>
+      </div>
+      <table class="sheet-tbl">
+        <thead>
+          <tr>
+            <th style="width:90px;">Date</th>
+            <th style="width:140px;">Reviewer</th>
+            <th style="width:80px;">Stars</th>
+            <th>Review</th>
+            <th>Response</th>
+            <th style="width:120px;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>May 23</td>
+            <td>Sarah R. <span style="color:var(--muted); font-size:11px;">· Elite</span></td>
+            <td style="color:var(--coral); letter-spacing:1px;">★★★★★</td>
+            <td>"The carbonara was incredible…"</td>
+            <td>"Thank you so much, Sarah! Chef Marco…"</td>
+            <td><span class="pill-status approved">Approved</span></td>
+          </tr>
+          <tr>
+            <td>May 22</td>
+            <td>Daniel P. <span style="color:var(--muted); font-size:11px;">· Returning</span></td>
+            <td style="color:var(--coral); letter-spacing:1px;">★★★★<span style="color:rgba(21,23,26,0.18)">★</span></td>
+            <td>"Great wine list, slow service…"</td>
+            <td>"We're so glad you enjoyed the…"</td>
+            <td><span class="pill-status approved">Approved</span></td>
+          </tr>
+          <tr>
+            <td>May 22</td>
+            <td>Maya T. <span style="color:var(--muted); font-size:11px;">· New</span></td>
+            <td style="color:var(--coral); letter-spacing:1px;">★★★<span style="color:rgba(21,23,26,0.18)">★★</span></td>
+            <td>"Service was a bit off tonight."</td>
+            <td>"Thanks for the honest note, Maya…"</td>
+            <td><span class="pill-status pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td>May 21</td>
+            <td>Tom B. <span style="color:var(--muted); font-size:11px;">· Elite</span></td>
+            <td style="color:var(--coral); letter-spacing:1px;">★★★★★</td>
+            <td>"Best Italian in OC, period."</td>
+            <td>"Tom — thank you. See you next…"</td>
+            <td><span class="pill-status live">Posted</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Roadmap</span>
+      <h2 class="h2">We're just <span class="serif-italic" style="color:var(--coral);">getting started.</span></h2>
+      <p class="lede" style="margin-top:18px;">We launched on Yelp first because it's the most critical and popular review platform for restaurants. Google, Facebook, and TripAdvisor are next on the runway — and our first customers come on as <strong style="color:var(--ink); font-weight:600;">Founding Members</strong>, locking in today's pricing forever. Every new platform we add ships into your plan at no extra charge.</p>
+    </div>
+
+    <div class="roadmap">
+      <!-- 1. Yelp -->
+      <div class="platform live">
+        <div class="rm-head">
+          <span class="rm-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </span>
+          <span class="rm-status"><span class="rm-pulse"></span>Live now</span>
+        </div>
+        <h3>Yelp</h3>
+        <p>Every review monitored every 2 hours. Drafted, quality-checked, ready for your approval.</p>
+        <div class="rm-eta">Available today</div>
+      </div>
+
+      <span class="rm-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </span>
+
+      <!-- 2. Google -->
+      <div class="platform next">
+        <div class="rm-head">
+          <span class="rm-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16" y2="16"/></svg>
+          </span>
+          <span class="rm-status">Up next</span>
+        </div>
+        <h3>Google</h3>
+        <p>The biggest review surface on the web. Same Sheet workflow, same approve-then-post flow.</p>
+        <div class="rm-eta">In development</div>
+      </div>
+
+      <span class="rm-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </span>
+
+      <!-- 3. Facebook -->
+      <div class="platform soon">
+        <div class="rm-head">
+          <span class="rm-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </span>
+          <span class="rm-status">On deck</span>
+        </div>
+        <h3>Facebook</h3>
+        <p>Page reviews and recommendations — handled with the same reviewer-intelligence tuning.</p>
+        <div class="rm-eta">Planning</div>
+      </div>
+
+      <span class="rm-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </span>
+
+      <!-- 4. TripAdvisor -->
+      <div class="platform planned">
+        <div class="rm-head">
+          <span class="rm-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <span class="rm-status">Planned</span>
+        </div>
+        <h3>TripAdvisor</h3>
+        <p>Hospitality-specific responses for restaurants with strong tourism traffic.</p>
+        <div class="rm-eta">On the runway</div>
+      </div>
+    </div>
+
+    <p class="rm-foot">
+      <span class="badge">Founding Member Perk</span>
+      Every new platform ships into your existing plan.
+    </p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto;">
+      <span class="eyebrow">Pricing</span>
+      <h2 class="h2" style="margin-top:18px;">Simple, transparent, <span class="serif-italic" style="color:var(--coral);">no contracts.</span></h2>
+      <p class="lede" style="margin:18px auto 0; text-align:left;">14-day free trial. No credit card required. Cancel anytime.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="plan">
+        <h3>Starter</h3>
+        <p class="desc">For single-location restaurants on Yelp.</p>
+        <div class="price">
+          <span class="it">TBD</span>
+          <span class="per">/ month, billed monthly</span>
+        </div>
+        <ul>
+          <li>Unlimited Yelp review monitoring</li>
+          <li>AI-generated responses (Claude)</li>
+          <li>Google Sheets approval workflow</li>
+          <li>Email notifications for new reviews</li>
+          <li>15-second post-to-Yelp flow</li>
+        </ul>
+        <a class="btn btn-ghost btn-lg" href="#contact" style="width:100%; justify-content:center;">Start 14-day trial</a>
+      </div>
+      <div class="plan featured">
+        <span class="tag">Most popular</span>
+        <h3>Starter + Setup</h3>
+        <p class="desc">We get you live in a 30-minute call.</p>
+        <div class="price">
+          <span class="it">TBD</span>
+          <span class="per" style="color:rgba(244,241,236,0.55);">/ month, free setup included</span>
+        </div>
+        <ul>
+          <li>Everything in Starter</li>
+          <li>Free 30-min setup call with our team</li>
+          <li>Custom voice & tone calibration</li>
+          <li>Reviewer intelligence: Elite, loyal, risk</li>
+          <li>Priority response &lt; 5 min for high-impact reviews</li>
+          <li>Cancel anytime — no contracts</li>
+        </ul>
+        <a class="btn btn-coral btn-lg" href="#contact" style="width:100%; justify-content:center; background:var(--coral);">Start 14-day trial <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <p style="text-align:center; margin-top:36px; font-size:13.5px; color:var(--muted);">
+      Questions about pricing? Email <a href="/cdn-cgi/l/email-protection#80e8e5ececefc0f2e5f0ecf9f7e9eee7aee1e9" style="color:var(--coral);"><span class="__cf_email__" data-cfemail="4d25282121220d3f283d21343a24232a632c24">[email&#160;protected]</span></a>
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="faq-grid">
+      <div>
+        <span class="eyebrow">FAQ</span>
+        <h2 class="h2" style="margin-top:18px; max-width:10ch;">Frequently asked.</h2>
+        <p class="lede" style="margin-top:18px;">Still curious? Email <a href="/cdn-cgi/l/email-protection#4f272a2323200f3d2a3f233638262128612e26" style="color:var(--coral); text-decoration:underline;"><span class="__cf_email__" data-cfemail="6008050c0c0f201205100c1917090e074e0109">[email&#160;protected]</span></a>.</p>
+      </div>
+      <div>
+        <details class="faq" open>
+          <summary>Is Reply Wing affiliated with Yelp?<span class="toggle">+</span></summary>
+          <div class="body">No. Reply Wing is an independent third-party service that helps you manage your Yelp reviews. We are not affiliated with, endorsed by, or sponsored by Yelp Inc. Yelp® is a registered trademark of Yelp Inc.</div>
+        </details>
+        <details class="faq">
+          <summary>Will customers know the response was written by AI?<span class="toggle">+</span></summary>
+          <div class="body">No. Every response is drafted in your restaurant's voice and reviewed by you before it goes live. You can edit anything before posting. Customers see a thoughtful, professional response from you — not a robot.</div>
+        </details>
+        <details class="faq">
+          <summary>What if I don't like the AI response?<span class="toggle">+</span></summary>
+          <div class="body">You have full control. Edit before posting, skip the review entirely, or write your own from scratch. The AI is a starting point — never the final word.</div>
+        </details>
+        <details class="faq">
+          <summary>How long does setup take?<span class="toggle">+</span></summary>
+          <div class="body">About 5 minutes. We set up a Google Sheet for your restaurant, connect it to our system, and run a test. The free setup call walks you through everything.</div>
+        </details>
+        <details class="faq">
+          <summary>What Yelp reviews does it cover?<span class="toggle">+</span></summary>
+          <div class="body">All of them. Every new review on your business page — 1★ to 5★ — gets monitored and responded to. We check every 2 hours, day and night.</div>
+        </details>
+        <details class="faq">
+          <summary>Do I need any technical skills?<span class="toggle">+</span></summary>
+          <div class="body">None. If you can use Google Sheets, you can use Reply Wing. No software to install, no dashboard to learn.</div>
+        </details>
+        <details class="faq">
+          <summary>Can I cancel anytime?<span class="toggle">+</span></summary>
+          <div class="body">Yes. No contracts, no cancellation fees, no questions asked.</div>
+        </details>
+        <details class="faq">
+          <summary>Do you treat all reviews the same?<span class="toggle">+</span></summary>
+          <div class="body">No. We analyze every reviewer before drafting. Elite members, loyal customers, and first-timers each get responses calibrated to them. High-influence reviewers get priority replies within 5 minutes.</div>
+        </details>
+        <details class="faq">
+          <summary>What about Google, Facebook, TripAdvisor?<span class="toggle">+</span></summary>
+          <div class="body">Yelp is our focus right now and we do it exceptionally well. Google, Facebook, and TripAdvisor are coming soon — when you're ready to expand, we'll be ready too.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG CTA -->
+<section id="contact">
+  <div class="wrap">
+    <div class="big-cta">
+      <svg class="bird-bg drift"><use href="#bird-white"/></svg>
+      <h2>Ready to give your reviews <span class="it">a wing?</span></h2>
+      <p>Join the Orange County restaurant owners who reply to every Yelp review — with intelligence, speed, and a personal touch.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="#pricing">Start 14-day free trial <span class="arrow">→</span></a>
+        <a class="btn btn-ghost btn-lg" href="/cdn-cgi/l/email-protection#4a222f2626250a382f3a26333d23242d642b23">Book a setup call</a>
+      </div>
+      <div class="micro">No credit card · Free setup included · Cancel anytime</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div class="brand-col">
+        <a class="brand" href="#top" style="display:flex; align-items:center; gap:12px;">
+          <svg width="32" height="32"><use href="#bird-paper"/></svg>
+          <span class="wordmark">reply<span class="accent">wing</span></span>
+        </a>
+        <p>Intelligent Yelp review responses for restaurant owners.</p>
+        <p style="margin-top:16px;">
+          <a href="/cdn-cgi/l/email-protection#7c14191010133c0e190c10050b15121b521d15" style="color:var(--coral);"><span class="__cf_email__" data-cfemail="c1a9a4adadae81b3a4b1adb8b6a8afa6efa0a8">[email&#160;protected]</span></a><br/>
+          replywing.ai
+        </p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#intelligence">Intelligence</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="/cdn-cgi/l/email-protection#4d25282121220d3f283d21343a24232a632c24">Book a call</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="legal">
+        Reply Wing is an independent service and is not affiliated with, endorsed by, or sponsored by Yelp Inc. Yelp® is a registered trademark of Yelp Inc.
+      </div>
+      <div class="copy">© 2026 Reply Wing</div>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

@@ -1331,7 +1331,7 @@
     </div>
 
     <p style="text-align:center; margin-top:36px; font-size:13.5px; color:var(--muted);">
-      Questions about pricing? Email <a href="/cdn-cgi/l/email-protection#b7ded9d1d8f7c5d2c7dbcec0ded9d099d6de" style="color:var(--coral);"><span class="__cf_email__" data-cfemail="6900070f06291b0c1905101e00070e470800">[email&#160;protected]</span></a>
+      Questions about pricing? Email <a id="email-pricing" style="color:var(--coral);"></a>
     </p>
   </div>
 </section>
@@ -1377,7 +1377,7 @@
       <div>
         <span class="eyebrow">FAQ</span>
         <h2 class="h2" style="margin-top:18px; max-width:10ch;">Frequently asked.</h2>
-        <p class="lede" style="margin-top:18px;">Still curious? Email <a href="/cdn-cgi/l/email-protection#94fdfaf2fbd4e6f1e4f8ede3fdfaf3baf5fd" style="color:var(--coral); text-decoration:underline;"><span class="__cf_email__" data-cfemail="345d5a525b74465144584d435d5a531a555d">[email&#160;protected]</span></a>.</p>
+        <p class="lede" style="margin-top:18px;">Still curious? Email <a id="email-faq" style="color:var(--coral); text-decoration:underline;"></a>.</p>
       </div>
       <div>
         <details class="faq" open>
@@ -1430,7 +1430,7 @@
       <p>Join the Orange County restaurant owners who reply to every Yelp review — with intelligence, speed, and a personal touch.</p>
       <div class="cta-row">
         <a class="btn btn-primary btn-lg" href="#pricing">Start 14-day free trial <span class="arrow">→</span></a>
-        <a class="btn btn-ghost btn-lg" href="/cdn-cgi/l/email-protection#563f383039162433263a2f213f383178373f">Book a setup call</a>
+        <a class="btn btn-ghost btn-lg" id="email-cta">Book a setup call</a>
       </div>
       <div class="micro">No credit card · Free setup included · Cancel anytime</div>
     </div>
@@ -1448,7 +1448,7 @@
         </a>
         <p>Intelligent Yelp review responses for restaurant owners.</p>
         <p style="margin-top:16px;">
-          <a href="/cdn-cgi/l/email-protection#3c55525a537c4e594c50454b55525b125d55" style="color:var(--coral);"><span class="__cf_email__" data-cfemail="1871767e77586a7d6874616f71767f367971">[email&#160;protected]</span></a><br/>
+          <a id="email-footer" style="color:var(--coral);"></a><br/>
           replywing.ai
         </p>
       </div>
@@ -1467,7 +1467,7 @@
         <ul>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a href="/cdn-cgi/l/email-protection#e68f888089a69483968a9f918f8881c8878f">Book a call</a></li>
+          <li><a id="email-contact" href="#contact">Book a call</a></li>
         </ul>
       </div>
       <div>
@@ -1487,5 +1487,23 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+<script>
+  // Assemble the contact address at runtime so it never sits in the
+  // HTML as plain text for scrapers to harvest.
+  (function () {
+    var e = "info" + "@" + "replywing" + "." + "ai";
+    // Links that display the address as their text
+    ["email-pricing", "email-faq", "email-footer"].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) { el.href = "mailto:" + e; el.textContent = e; }
+    });
+    // Labeled buttons — set the href only, keep their existing label
+    ["email-cta", "email-contact"].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) { el.href = "mailto:" + e; }
+    });
+  })();
+</script>
+
+</body>
 </html>

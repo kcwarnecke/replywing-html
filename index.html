@@ -4,10 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Reply Wing — AI review replies on autopilot</title>
-<meta name="description" content="Reply Wing's AI drafts professional responses to every review across Yelp, Google, Facebook, and TripAdvisor. You approve in seconds. Done." />
+<meta name="description" content="Reply Wing's AI drafts professional responses to every review across Yelp, Google, Facebook, and TripAdvisor. You approve. We post. Done." />
 <link rel="icon" type="image/png" href="assets/favicon-64.png" />
 <meta property="og:title" content="Reply Wing — AI review replies on autopilot" />
-<meta property="og:description" content="AI-drafted, you-approved review replies across Yelp, Google, Facebook, and TripAdvisor." />
+<meta property="og:description" content="AI-drafted, you-approved review replies across every major platform. For any business." />
 <meta property="og:image" content="assets/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -506,100 +506,6 @@
   .pill-status.pending { background: #FFEEC7; color: #6B4400; }
   .pill-status.live { background: var(--coral); color: white; }
 
-  /* ---------- ROADMAP ---------- */
-  .roadmap {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-    gap: 14px;
-    align-items: stretch;
-  }
-  @media (max-width: 980px) {
-    .roadmap { grid-template-columns: 1fr 1fr; gap: 16px; }
-    .roadmap .rm-arrow { display: none; }
-  }
-  @media (max-width: 560px) {
-    .roadmap { grid-template-columns: 1fr; }
-  }
-  .platform {
-    background: white;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: 24px 22px 22px;
-    display: flex; flex-direction: column; gap: 14px;
-    position: relative;
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-  }
-  .platform:hover { transform: translateY(-3px); box-shadow: 0 20px 44px -28px rgba(21,23,26,0.28); border-color: rgba(21,23,26,0.2); }
-  .platform.live { background: var(--ink); color: var(--paper); border-color: var(--ink); box-shadow: 0 24px 60px -36px rgba(242,92,58,0.6); }
-  .platform.live h3 { color: var(--paper); }
-  .platform.live p { color: rgba(244,241,236,0.7); }
-  .platform.next { border-color: var(--coral); border-width: 2px; padding: 23px 21px 21px; }
-  .platform.soon, .platform.planned { border-style: dashed; background: transparent; }
-  .platform.planned { opacity: 0.78; }
-
-  .platform .rm-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-  .platform .rm-icon {
-    width: 40px; height: 40px; border-radius: 12px;
-    background: var(--coral-soft); color: var(--coral);
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .platform .rm-icon svg { width: 20px; height: 20px; }
-  .platform.live .rm-icon { background: var(--coral); color: white; }
-  .platform.soon .rm-icon, .platform.planned .rm-icon { background: rgba(21,23,26,0.06); color: var(--muted); }
-
-  .platform .rm-status {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
-    padding: 5px 10px; border-radius: 999px;
-    background: rgba(21,23,26,0.06); color: var(--muted);
-    white-space: nowrap;
-  }
-  .platform.live .rm-status { background: rgba(244,241,236,0.12); color: var(--paper); }
-  .platform.next .rm-status { background: var(--coral); color: white; }
-  .platform .rm-pulse {
-    width: 7px; height: 7px; border-radius: 999px; background: var(--coral);
-    box-shadow: 0 0 0 0 rgba(242,92,58,0.6);
-    animation: pulse 1.6s ease-out infinite;
-  }
-
-  .platform h3 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
-  .platform p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
-  .platform.soon p, .platform.planned p { color: var(--muted); }
-
-  .platform .rm-eta {
-    margin-top: auto;
-    padding-top: 12px;
-    border-top: 1px dashed var(--line);
-    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 500;
-  }
-  .platform.live .rm-eta { border-top-color: var(--line-dark); color: rgba(244,241,236,0.55); }
-
-  .rm-arrow {
-    align-self: center;
-    width: 28px; height: 28px;
-    display: inline-flex; align-items: center; justify-content: center;
-    color: var(--coral);
-  }
-  .rm-arrow svg { width: 22px; height: 22px; }
-
-  .rm-foot {
-    margin-top: 40px;
-    text-align: center;
-    font-size: 14px;
-    color: var(--muted);
-    display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;
-  }
-  .rm-foot .badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 14px;
-    background: var(--coral-soft); color: #8a2812;
-    border-radius: 999px;
-    font-size: 13px; font-weight: 500;
-  }
-  .rm-foot .badge::before {
-    content: ""; width: 6px; height: 6px; border-radius: 999px; background: var(--coral);
-  }
-
   /* ---------- PRICING ---------- */
   .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 860px; margin: 0 auto; }
   @media (max-width: 720px) { .pricing-grid { grid-template-columns: 1fr; } }
@@ -907,17 +813,13 @@
   <div class="wrap">
     <div class="grid">
       <div>
-        <span class="eyebrow-chip">
-          <span class="badge"><svg viewBox="0 0 200 200"><use href="#bird-paper"/></svg></span>
-          Powered by Claude AI
-        </span>
         <h1 style="margin-top:24px;">
           <span class="word-stack">Every review</span>
           <span class="word-stack">deserves</span>
           <span class="word-stack">a <span class="it">great</span> response.</span>
         </h1>
         <p class="sub">
-          You're running a restaurant, not a social media team. Reply Wing's AI drafts professional responses to every review across Yelp, Google, Facebook, and TripAdvisor — you approve in seconds.
+          You're running a business, not a social media team. Reply Wing's AI drafts professional responses to every review across Yelp, Google, Facebook, and TripAdvisor — you approve, we post.
         </p>
         <div class="ticker">
           <span><span class="num">12</span> replies sent today</span>
@@ -977,7 +879,6 @@
     </div>
 
     <div class="trust-strip">
-      <span style="font-size:12.5px; color:var(--muted);">Works with:</span>
       <span class="pill"><span class="dot"></span>Yelp</span>
       <span class="pill"><span class="dot"></span>Google</span>
       <span class="pill"><span class="dot"></span>Facebook</span>
@@ -1015,7 +916,7 @@
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">The reality</span>
-      <h2 class="h2">Running a restaurant is hard enough. <span class="serif-italic" style="color:var(--coral);">Yelp shouldn't add to it.</span></h2>
+      <h2 class="h2">Running a business is hard enough. <span class="serif-italic" style="color:var(--coral);">Reviews shouldn't add to it.</span></h2>
     </div>
     <div class="three-up">
       <div class="card">
@@ -1031,7 +932,7 @@
       <div class="card">
         <div class="num-tag"><span class="n">03</span>The silence problem</div>
         <h3>Unanswered reviews hurt you.</h3>
-        <p>53% of diners expect a response within a week. Every silent review tells future customers you don't care.</p>
+        <p>53% of customers expect a response within a week. Every silent review tells future customers you don't care.</p>
       </div>
     </div>
   </div>
@@ -1042,13 +943,13 @@
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">How it works</span>
-      <h2 class="h2" style="max-width:16ch;">From new review to posted response in <span class="serif-italic" style="color:var(--coral);">three steps.</span></h2>
+      <h2 class="h2" style="max-width:16ch;">From new review to posted response in <span class="serif-italic" style="color:var(--coral);">four steps.</span></h2>
     </div>
     <div class="steps">
       <div class="step">
         <div class="n">01 · Connect</div>
         <h3>Add us as a manager in 2 minutes.</h3>
-        <p>Each platform lets you invite Reply Wing as a manager — Yelp, Google, Facebook, and TripAdvisor all support this natively. We walk you through it on your free setup call.</p>
+        <p>Each platform — Yelp, Google, Facebook, and TripAdvisor — lets you invite Reply Wing as an authorized manager. We walk you through it on your free setup call. One-time setup, works forever.</p>
         <span class="pill"><span class="dot"></span>One-time setup per platform</span>
       </div>
       <div class="step">
@@ -1059,15 +960,15 @@
       </div>
       <div class="step">
         <div class="n">03 · Draft</div>
-        <h3>Claude AI drafts a calibrated response.</h3>
+        <h3>AI drafts a calibrated response.</h3>
         <p>It doesn't just read the review — it analyzes <em>who</em> left it. Elite reviewers, loyal regulars, and first-timers each get a reply tuned to them.</p>
         <span class="pill"><span class="dot"></span>Reviewer intelligence built in</span>
       </div>
       <div class="step">
         <div class="n">04 · Post</div>
-        <h3>You approve & post in 15 seconds.</h3>
-        <p>Review the draft in your Google Sheet. Approve, edit, or skip. One click copies it and opens the review platform. Paste and post.</p>
-        <span class="pill"><span class="dot"></span>Your approval, always</span>
+        <h3>You approve. We post.</h3>
+        <p>Review the draft in your Google Sheet. Approve it, edit it, or skip it. Once approved, Reply Wing posts the response directly to the platform on your behalf. No copy-pasting, no manual steps.</p>
+        <span class="pill"><span class="dot"></span>Your approval, our hands</span>
       </div>
     </div>
   </div>
@@ -1087,7 +988,7 @@
         </div>
         <div class="ft-body">
           <h3>Always your voice</h3>
-          <p>Every response is drafted in your restaurant's tone and approved by you before it goes live. No surprises.</p>
+          <p>Every response is drafted in your business's tone and approved by you before it goes live. No surprises.</p>
         </div>
       </div>
       <div class="feature">
@@ -1146,14 +1047,14 @@
       <span class="eyebrow">Reviewer intelligence</span>
       <h2 class="h2">Not all reviews are <span class="serif-italic" style="color:var(--coral);">created equal.</span></h2>
       <p class="lede" style="margin-top:18px;">
-        A 5★ from a Yelp Elite with 800 reviews carries more weight than one from a brand-new account. Reply Wing knows the difference.
+        A 5★ from a platform power user with 800 reviews carries more weight than one from a brand-new account. Reply Wing knows the difference.
       </p>
     </div>
 
     <div class="intel-grid">
       <div>
         <p style="font-size:15px; color:var(--ink-2); line-height:1.65; max-width:42ch;">
-          We analyze every reviewer before drafting a response — identifying influence, history, and their relationship with your restaurant. The result: replies that are always perfectly calibrated to the person who left them.
+          We analyze every reviewer before drafting a response — identifying influence, history, and their relationship with your business. The result: replies that are always perfectly calibrated to the person who left them.
         </p>
         <div style="margin-top:32px; display:flex; flex-direction:column; gap:14px;">
           <div style="display:flex; gap:14px; align-items:flex-start;">
@@ -1291,17 +1192,17 @@
     <div class="pricing-grid">
       <div class="plan">
         <h3>Starter</h3>
-        <p class="desc">For single-location restaurants on any platform.</p>
+        <p class="desc">For single-location businesses on any platform.</p>
         <div class="price">
           <span class="it">TBD</span>
           <span class="per">/ month, billed monthly</span>
         </div>
         <ul>
           <li>Unlimited review monitoring across all platforms</li>
-          <li>AI-generated responses (Claude)</li>
+          <li>AI-generated responses</li>
           <li>Google Sheets approval workflow</li>
           <li>Email notifications for new reviews</li>
-          <li>15-second post flow</li>
+          <li>We post responses on your behalf</li>
         </ul>
         <a class="btn btn-ghost btn-lg" href="#contact" style="width:100%; justify-content:center;">Start 14-day trial</a>
       </div>
@@ -1343,7 +1244,7 @@
       <div class="roi-card">
         <div class="roi-num">5–10 hrs</div>
         <div class="roi-label">Saved per week</div>
-        <p>Stop hand-writing replies. Reply Wing drafts every response for you to approve — reclaiming hours back into actually running your restaurant.</p>
+        <p>Stop hand-writing replies. Reply Wing drafts every response for you to approve — reclaiming hours back into actually running your business.</p>
       </div>
       <div class="roi-card">
         <div class="roi-num">2–3×</div>
@@ -1358,8 +1259,8 @@
     </div>
 
     <div class="roi-copy">
-      <p>At <strong>TBD/month</strong>, Reply Wing pays for itself the moment it wins back a single customer. One recovered reservation, one diner who chose you because you answered — and the month is already covered.</p>
-      <p>The compounding is where it gets serious. <strong>Time saved every week</strong> and <strong>SEO momentum</strong> stack month over month: more visibility brings more reviews, more responses lift you higher, and the gap between you and the restaurant down the street keeps widening.</p>
+      <p>At <strong>TBD/month</strong>, Reply Wing pays for itself the moment it wins back a single customer. One recovered customer, one person who chose you because you answered — and the month is already covered.</p>
+      <p>The compounding is where it gets serious. <strong>Time saved every week</strong> and <strong>SEO momentum</strong> stack month over month: more visibility brings more reviews, more responses lift you higher, and the gap between you and the competition keeps widening.</p>
       <p>Most businesses leave their reviews <strong>completely unmanaged</strong> — which actively <em class="serif-italic">hurts</em> their local search ranking. Showing up, on time, in your voice, isn't a nice-to-have. It's the cheapest growth lever you have.</p>
     </div>
   </div>
@@ -1381,7 +1282,7 @@
         </details>
         <details class="faq">
           <summary>Will customers know the response was written by AI?<span class="toggle">+</span></summary>
-          <div class="body">No. Every response is drafted in your restaurant's voice and reviewed by you before it goes live. You can edit anything before posting. Customers see a thoughtful, professional response from you — not a robot.</div>
+          <div class="body">No. Every response is drafted in your business's voice and reviewed by you before it goes live. You can edit anything before posting. Customers see a thoughtful, professional response from you — not a robot.</div>
         </details>
         <details class="faq">
           <summary>What if I don't like the AI response?<span class="toggle">+</span></summary>
@@ -1389,15 +1290,15 @@
         </details>
         <details class="faq">
           <summary>How long does setup take?<span class="toggle">+</span></summary>
-          <div class="body">About 5 minutes. We set up a Google Sheet for your restaurant, connect it to our system, and run a test. The free setup call walks you through everything.</div>
+          <div class="body">About 5 minutes. We set up a Google Sheet for your business, connect it to our system, and walk you through adding Reply Wing as a manager on each platform. The free setup call covers everything.</div>
         </details>
         <details class="faq">
-          <summary>How does Reply Wing get access to my reviews?<span class="toggle">+</span></summary>
-          <div class="body">Each platform — Yelp, Google, Facebook, and TripAdvisor — has a built-in User Management feature that lets you invite a third party as a manager. You add Reply Wing's email address once per platform, and from that point on, review notifications route to us automatically. We walk you through every step on your free setup call. No passwords shared, no scraping — just a clean, platform-approved access model.</div>
+          <summary>Does Reply Wing post the responses for me?<span class="toggle">+</span></summary>
+          <div class="body">Yes. Once you approve a response in your Google Sheet, Reply Wing posts it directly to the platform on your behalf — no copy-pasting, no manual steps. We're authorized to do this because you add Reply Wing as a manager to your Yelp, Google, Facebook, and TripAdvisor accounts during onboarding. Nothing goes live without your approval first.</div>
         </details>
         <details class="faq">
           <summary>What reviews does it cover?<span class="toggle">+</span></summary>
-          <div class="body">All of them, across all four platforms — Yelp, Google, Facebook, and TripAdvisor. Every new review on your business pages — 1★ to 5★ — gets detected instantly and responded to, day and night.</div>
+          <div class="body">All of them, across all four platforms — Yelp, Google, Facebook, and TripAdvisor. Every new review — 1★ to 5★ — is detected instantly and responded to, day and night.</div>
         </details>
         <details class="faq">
           <summary>Do I need any technical skills?<span class="toggle">+</span></summary>
@@ -1422,7 +1323,7 @@
     <div class="big-cta">
       <svg class="bird-bg drift"><use href="#bird-white"/></svg>
       <h2>Ready to give your reviews <span class="it">a wing?</span></h2>
-      <p>Join the Orange County restaurant owners who reply to every review — across every platform — with intelligence, speed, and a personal touch.</p>
+      <p>Join the Orange County business owners who reply to every review — across every platform — with intelligence, speed, and a personal touch.</p>
       <div class="cta-row">
         <a class="btn btn-primary btn-lg" href="#pricing">Start 14-day free trial <span class="arrow">→</span></a>
         <a class="btn btn-ghost btn-lg" id="email-cta">Book a setup call</a>
@@ -1441,7 +1342,7 @@
           <svg width="32" height="32"><use href="#bird-paper"/></svg>
           <span class="wordmark">reply<span class="accent">wing</span></span>
         </a>
-        <p>Intelligent review responses for restaurant owners.</p>
+        <p>Intelligent review responses for any business.</p>
         <p style="margin-top:16px;">
           <a id="email-footer" style="color:var(--coral);"></a><br/>
           replywing.ai

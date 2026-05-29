@@ -25,7 +25,7 @@
     --line-dark: rgba(244,241,236,0.14);
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; }
+  html, body { margin: 0; overflow-x: hidden; }
   body {
     font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
     background: var(--paper);
@@ -89,7 +89,13 @@
   nav.top .links { display: flex; gap: 28px; font-size: 14px; color: var(--ink-2); }
   nav.top .links a:hover { color: var(--coral); }
   nav.top .cta-group { display: flex; gap: 10px; align-items: center; }
-  @media (max-width: 860px) { nav.top .links { display: none; } }
+  @media (max-width: 860px) {
+    nav.top .links { display: none; }
+    nav.top .cta-group .btn-ghost { display: none; }
+  }
+  @media (max-width: 400px) {
+    nav.top .btn { font-size: 13px; padding: 9px 14px; }
+  }
 
   /* ---------- BUTTONS ---------- */
   .btn {
@@ -755,6 +761,60 @@
     50% { transform: translate(8px, -8px) rotate(-2deg); }
   }
   .drift { animation: drift 6s ease-in-out infinite; }
+
+  /* ---------- MOBILE NAV HAMBURGER ---------- */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: 8px;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  @media (max-width: 860px) {
+    .nav-hamburger { display: flex; }
+  }
+
+  .nav-mobile-menu {
+    display: none;
+    flex-direction: column;
+    position: sticky;
+    top: 72px;
+    z-index: 49;
+    background: rgba(244,241,236,0.97);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+    padding: 8px 20px 16px;
+  }
+  .nav-mobile-menu a {
+    padding: 12px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-mobile-menu a:last-child { border-bottom: none; }
+  .nav-mobile-menu a:hover { color: var(--coral); }
+  .nav-mobile-menu.open { display: flex; }
+
+  @media (min-width: 861px) {
+    .nav-mobile-menu { display: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -806,8 +866,20 @@
       <a class="btn btn-ghost" href="#contact">Book a call</a>
       <a class="btn btn-primary" href="#pricing">Start free trial <span class="arrow">→</span></a>
     </div>
+    <button class="nav-hamburger" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<div class="nav-mobile-menu" id="navMobileMenu">
+  <a href="#how">How it works</a>
+  <a href="#features">Features</a>
+  <a href="#intelligence">Intelligence</a>
+  <a href="#roadmap">Roadmap</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#faq">FAQ</a>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="top">
@@ -1503,6 +1575,25 @@
       if (el) { el.href = "mailto:" + e; }
     });
   })();
+</script>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navMenu = document.getElementById('navMobileMenu');
+
+  navToggle.addEventListener('click', () => {
+    const isOpen = navMenu.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', false);
+    });
+  });
 </script>
 
 </body>

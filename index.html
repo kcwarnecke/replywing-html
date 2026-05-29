@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Reply Wing — Yelp review replies on autopilot</title>
-<meta name="description" content="Reply Wing's AI drafts professional responses to every Yelp review. You approve in seconds. Done." />
+<title>Reply Wing — AI review replies on autopilot</title>
+<meta name="description" content="Reply Wing's AI drafts professional responses to every review across Yelp, Google, Facebook, and TripAdvisor. You approve in seconds. Done." />
 <link rel="icon" type="image/png" href="assets/favicon-64.png" />
-<meta property="og:title" content="Reply Wing — Yelp review replies on autopilot" />
-<meta property="og:description" content="AI-drafted, you-approved Yelp review replies for restaurant owners." />
+<meta property="og:title" content="Reply Wing — AI review replies on autopilot" />
+<meta property="og:description" content="AI-drafted, you-approved review replies across Yelp, Google, Facebook, and TripAdvisor." />
 <meta property="og:image" content="assets/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -371,7 +371,7 @@
   .how-section .section-head h2 { color: var(--paper); }
   .how-section .eyebrow { color: rgba(244,241,236,0.5); }
   .how-section .lede { color: rgba(244,241,236,0.7); }
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line-dark); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line-dark); }
   @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
   .step {
     padding: 36px 28px 36px 0;
@@ -856,7 +856,6 @@
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#intelligence">Intelligence</a>
-      <a href="#roadmap">Roadmap</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </div>
@@ -874,7 +873,6 @@
   <a href="#how">How it works</a>
   <a href="#features">Features</a>
   <a href="#intelligence">Intelligence</a>
-  <a href="#roadmap">Roadmap</a>
   <a href="#pricing">Pricing</a>
   <a href="#faq">FAQ</a>
 </div>
@@ -914,19 +912,19 @@
           Powered by Claude AI
         </span>
         <h1 style="margin-top:24px;">
-          <span class="word-stack">Every Yelp</span>
-          <span class="word-stack">review deserves</span>
+          <span class="word-stack">Every review</span>
+          <span class="word-stack">deserves</span>
           <span class="word-stack">a <span class="it">great</span> response.</span>
         </h1>
         <p class="sub">
-          You're running a restaurant, not a social media team. Reply Wing's AI drafts professional responses to every Yelp review — you approve in seconds.
+          You're running a restaurant, not a social media team. Reply Wing's AI drafts professional responses to every review across Yelp, Google, Facebook, and TripAdvisor — you approve in seconds.
         </p>
         <div class="ticker">
           <span><span class="num">12</span> replies sent today</span>
           <span class="sep"></span>
           <span><span class="num">5★</span> avg rating</span>
           <span class="sep"></span>
-          <span><span class="num">2hr</span> avg response</span>
+          <span><span class="num">Instant</span> detection</span>
         </div>
         <div class="cta-row">
           <a class="btn btn-primary btn-lg" href="#pricing">Start 14-day free trial <span class="arrow">→</span></a>
@@ -979,8 +977,11 @@
     </div>
 
     <div class="trust-strip">
-      <span class="pill"><span class="dot"></span>Now supporting Yelp</span>
-      <a href="#roadmap" style="font-size:12.5px; color:var(--muted); text-decoration:none; display:inline-flex; align-items:center; gap:6px;">Google · Facebook · TripAdvisor on the roadmap <span style="color:var(--coral);">→</span></a>
+      <span style="font-size:12.5px; color:var(--muted);">Works with:</span>
+      <span class="pill"><span class="dot"></span>Yelp</span>
+      <span class="pill"><span class="dot"></span>Google</span>
+      <span class="pill"><span class="dot"></span>Facebook</span>
+      <span class="pill"><span class="dot"></span>TripAdvisor</span>
     </div>
   </div>
 </section>
@@ -1045,21 +1046,27 @@
     </div>
     <div class="steps">
       <div class="step">
-        <div class="n">01 · Detect</div>
-        <h3>We monitor your Yelp page 24/7.</h3>
-        <p>Our system checks your page every 2 hours. The moment a new review appears, we catch it — day or night.</p>
-        <span class="pill"><span class="dot"></span>New reviews detected within 2 hours</span>
+        <div class="n">01 · Connect</div>
+        <h3>Add us as a manager in 2 minutes.</h3>
+        <p>Each platform lets you invite Reply Wing as a manager — Yelp, Google, Facebook, and TripAdvisor all support this natively. We walk you through it on your free setup call.</p>
+        <span class="pill"><span class="dot"></span>One-time setup per platform</span>
       </div>
       <div class="step">
-        <div class="n">02 · Draft</div>
+        <div class="n">02 · Detect</div>
+        <h3>We monitor every platform 24/7.</h3>
+        <p>The moment a new review is posted, the platform notifies us directly. No delays, no polling — we catch it in real time, day or night, across all four platforms.</p>
+        <span class="pill"><span class="dot"></span>New reviews detected instantly</span>
+      </div>
+      <div class="step">
+        <div class="n">03 · Draft</div>
         <h3>Claude AI drafts a calibrated response.</h3>
         <p>It doesn't just read the review — it analyzes <em>who</em> left it. Elite reviewers, loyal regulars, and first-timers each get a reply tuned to them.</p>
         <span class="pill"><span class="dot"></span>Reviewer intelligence built in</span>
       </div>
       <div class="step">
-        <div class="n">03 · Post</div>
+        <div class="n">04 · Post</div>
         <h3>You approve & post in 15 seconds.</h3>
-        <p>Review the draft in your Google Sheet. Approve, edit, or skip. One click copies it and opens Yelp. Paste and post.</p>
+        <p>Review the draft in your Google Sheet. Approve, edit, or skip. One click copies it and opens the review platform. Paste and post.</p>
         <span class="pill"><span class="dot"></span>Your approval, always</span>
       </div>
     </div>
@@ -1089,7 +1096,7 @@
         </div>
         <div class="ft-body">
           <h3>Lightning fast</h3>
-          <p>Stop letting reviews sit unanswered for days. Our AI responds within hours — your Yelp page stays active.</p>
+          <p>Stop letting reviews sit unanswered for days. Our AI responds within hours — your profiles stay active across every platform.</p>
         </div>
       </div>
       <div class="feature">
@@ -1107,7 +1114,7 @@
         </div>
         <div class="ft-body">
           <h3>Fraction of the cost</h3>
-          <p>A social media manager costs $2,000+/month. Reply Wing handles your Yelp reviews for a fraction of that.</p>
+          <p>A social media manager costs $2,000+/month. Reply Wing handles your reviews across all platforms for a fraction of that.</p>
         </div>
       </div>
       <div class="feature">
@@ -1116,7 +1123,7 @@
         </div>
         <div class="ft-body">
           <h3>Reviewer intelligence</h3>
-          <p>We identify Yelp Elite, loyal returning customers, and high-risk profiles — so every reply fits exactly who left it.</p>
+          <p>We identify platform power users (like Yelp Elite and Google Local Guides), loyal returning customers, and high-risk profiles — so every reply fits exactly who left it.</p>
         </div>
       </div>
       <div class="feature">
@@ -1272,88 +1279,6 @@
   </div>
 </section>
 
-<!-- ROADMAP -->
-<section id="roadmap" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Roadmap</span>
-      <h2 class="h2">We're just <span class="serif-italic" style="color:var(--coral);">getting started.</span></h2>
-      <p class="lede" style="margin-top:18px;">We launched on Yelp first because it's the most critical and popular review platform for restaurants. Google, Facebook, and TripAdvisor are next on the runway — and our first customers come on as <strong style="color:var(--ink); font-weight:600;">Founding Members</strong>, locking in today's pricing forever. Every new platform we add ships into your plan at no extra charge.</p>
-    </div>
-
-    <div class="roadmap">
-      <!-- 1. Yelp -->
-      <div class="platform live">
-        <div class="rm-head">
-          <span class="rm-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </span>
-          <span class="rm-status"><span class="rm-pulse"></span>Live now</span>
-        </div>
-        <h3>Yelp</h3>
-        <p>Every review monitored every 2 hours. Drafted, quality-checked, ready for your approval.</p>
-        <div class="rm-eta">Available today</div>
-      </div>
-
-      <span class="rm-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
-      </span>
-
-      <!-- 2. Google -->
-      <div class="platform next">
-        <div class="rm-head">
-          <span class="rm-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16" y2="16"/></svg>
-          </span>
-          <span class="rm-status">Up next</span>
-        </div>
-        <h3>Google</h3>
-        <p>The biggest review surface on the web. Same Sheet workflow, same approve-then-post flow.</p>
-        <div class="rm-eta">In development</div>
-      </div>
-
-      <span class="rm-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
-      </span>
-
-      <!-- 3. Facebook -->
-      <div class="platform soon">
-        <div class="rm-head">
-          <span class="rm-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          </span>
-          <span class="rm-status">On deck</span>
-        </div>
-        <h3>Facebook</h3>
-        <p>Page reviews and recommendations — handled with the same reviewer-intelligence tuning.</p>
-        <div class="rm-eta">Planning</div>
-      </div>
-
-      <span class="rm-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
-      </span>
-
-      <!-- 4. TripAdvisor -->
-      <div class="platform planned">
-        <div class="rm-head">
-          <span class="rm-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </span>
-          <span class="rm-status">Planned</span>
-        </div>
-        <h3>TripAdvisor</h3>
-        <p>Hospitality-specific responses for restaurants with strong tourism traffic.</p>
-        <div class="rm-eta">On the runway</div>
-      </div>
-    </div>
-
-    <p class="rm-foot">
-      <span class="badge">Founding Member Perk</span>
-      Every new platform ships into your existing plan.
-    </p>
-  </div>
-</section>
-
 <!-- PRICING -->
 <section id="pricing" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
   <div class="wrap">
@@ -1366,17 +1291,17 @@
     <div class="pricing-grid">
       <div class="plan">
         <h3>Starter</h3>
-        <p class="desc">For single-location restaurants on Yelp.</p>
+        <p class="desc">For single-location restaurants on any platform.</p>
         <div class="price">
           <span class="it">TBD</span>
           <span class="per">/ month, billed monthly</span>
         </div>
         <ul>
-          <li>Unlimited Yelp review monitoring</li>
+          <li>Unlimited review monitoring across all platforms</li>
           <li>AI-generated responses (Claude)</li>
           <li>Google Sheets approval workflow</li>
           <li>Email notifications for new reviews</li>
-          <li>15-second post-to-Yelp flow</li>
+          <li>15-second post flow</li>
         </ul>
         <a class="btn btn-ghost btn-lg" href="#contact" style="width:100%; justify-content:center;">Start 14-day trial</a>
       </div>
@@ -1451,8 +1376,8 @@
       </div>
       <div>
         <details class="faq" open>
-          <summary>Is Reply Wing affiliated with Yelp?<span class="toggle">+</span></summary>
-          <div class="body">No. Reply Wing is an independent third-party service that helps you manage your Yelp reviews. We are not affiliated with, endorsed by, or sponsored by Yelp Inc. Yelp® is a registered trademark of Yelp Inc.</div>
+          <summary>Is Reply Wing affiliated with Yelp, Google, Facebook, or TripAdvisor?<span class="toggle">+</span></summary>
+          <div class="body">No. Reply Wing is an independent third-party service. We are not affiliated with, endorsed by, or sponsored by Yelp Inc., Google LLC, Meta Platforms Inc., or Tripadvisor LLC. All platform names and trademarks are the property of their respective owners.</div>
         </details>
         <details class="faq">
           <summary>Will customers know the response was written by AI?<span class="toggle">+</span></summary>
@@ -1467,8 +1392,12 @@
           <div class="body">About 5 minutes. We set up a Google Sheet for your restaurant, connect it to our system, and run a test. The free setup call walks you through everything.</div>
         </details>
         <details class="faq">
-          <summary>What Yelp reviews does it cover?<span class="toggle">+</span></summary>
-          <div class="body">All of them. Every new review on your business page — 1★ to 5★ — gets monitored and responded to. We check every 2 hours, day and night.</div>
+          <summary>How does Reply Wing get access to my reviews?<span class="toggle">+</span></summary>
+          <div class="body">Each platform — Yelp, Google, Facebook, and TripAdvisor — has a built-in User Management feature that lets you invite a third party as a manager. You add Reply Wing's email address once per platform, and from that point on, review notifications route to us automatically. We walk you through every step on your free setup call. No passwords shared, no scraping — just a clean, platform-approved access model.</div>
+        </details>
+        <details class="faq">
+          <summary>What reviews does it cover?<span class="toggle">+</span></summary>
+          <div class="body">All of them, across all four platforms — Yelp, Google, Facebook, and TripAdvisor. Every new review on your business pages — 1★ to 5★ — gets detected instantly and responded to, day and night.</div>
         </details>
         <details class="faq">
           <summary>Do I need any technical skills?<span class="toggle">+</span></summary>
@@ -1482,10 +1411,6 @@
           <summary>Do you treat all reviews the same?<span class="toggle">+</span></summary>
           <div class="body">No. We analyze every reviewer before drafting. Elite members, loyal customers, and first-timers each get responses calibrated to them. High-influence reviewers get priority replies within 5 minutes.</div>
         </details>
-        <details class="faq">
-          <summary>What about Google, Facebook, TripAdvisor?<span class="toggle">+</span></summary>
-          <div class="body">Yelp is our focus right now and we do it exceptionally well. Google, Facebook, and TripAdvisor are coming soon — when you're ready to expand, we'll be ready too.</div>
-        </details>
       </div>
     </div>
   </div>
@@ -1497,7 +1422,7 @@
     <div class="big-cta">
       <svg class="bird-bg drift"><use href="#bird-white"/></svg>
       <h2>Ready to give your reviews <span class="it">a wing?</span></h2>
-      <p>Join the Orange County restaurant owners who reply to every Yelp review — with intelligence, speed, and a personal touch.</p>
+      <p>Join the Orange County restaurant owners who reply to every review — across every platform — with intelligence, speed, and a personal touch.</p>
       <div class="cta-row">
         <a class="btn btn-primary btn-lg" href="#pricing">Start 14-day free trial <span class="arrow">→</span></a>
         <a class="btn btn-ghost btn-lg" id="email-cta">Book a setup call</a>
@@ -1516,7 +1441,7 @@
           <svg width="32" height="32"><use href="#bird-paper"/></svg>
           <span class="wordmark">reply<span class="accent">wing</span></span>
         </a>
-        <p>Intelligent Yelp review responses for restaurant owners.</p>
+        <p>Intelligent review responses for restaurant owners.</p>
         <p style="margin-top:16px;">
           <a id="email-footer" style="color:var(--coral);"></a><br/>
           replywing.ai
@@ -1528,7 +1453,6 @@
           <li><a href="#how">How it works</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#intelligence">Intelligence</a></li>
-          <li><a href="#roadmap">Roadmap</a></li>
           <li><a href="#pricing">Pricing</a></li>
         </ul>
       </div>
@@ -1550,7 +1474,7 @@
     </div>
     <div class="bottom">
       <div class="legal">
-        Reply Wing is an independent service and is not affiliated with, endorsed by, or sponsored by Yelp Inc. Yelp® is a registered trademark of Yelp Inc.
+        Reply Wing is an independent service and is not affiliated with, endorsed by, or sponsored by Yelp Inc., Google LLC, Meta Platforms Inc., or Tripadvisor LLC. All platform names and trademarks are the property of their respective owners.
       </div>
       <div class="copy">© 2026 Reply Wing</div>
     </div>
